@@ -1,0 +1,41 @@
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.7.20)  20 JUL 2022 15:56
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**body.tex
+(./body.tex
+LaTeX2e <2022-06-01> patch level 5
+L3 programming layer <2022-07-15>
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1 发
+     动机撒开
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 发 ("53D1) in font nullfont!
+Missing character: There is no 动 ("52A8) in font nullfont!
+Missing character: There is no 机 ("673A) in font nullfont!
+Missing character: There is no 撒 ("6492) in font nullfont!
+Missing character: There is no 开 ("5F00) in font nullfont!
+)
+! Emergency stop.
+<*> body.tex
+            
+*** (job aborted, no legal \end found)
+
+ 
+Here is how much of TeX's memory you used:
+ 14 strings out of 475865
+ 281 string characters out of 5802056
+ 307692 words of memory out of 5000000
+ 21183 multiletter control sequences out of 15000+600000
+ 469259 words of font info for 28 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 12i,0n,12p,46b,14s stack positions out of 10000i,1000n,20000p,200000b,200000s
+No pages of output.
