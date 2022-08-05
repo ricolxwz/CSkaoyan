@@ -1,6 +1,6 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.7.20)  20 JUL 2022 17:13
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.7.20)  5 AUG 2022 07:25
 entering extended mode
- restricted \write18 enabled.
+ \write18 enabled.
  %&-line parsing enabled.
 **main.tex
 (./main.tex
@@ -510,19 +510,23 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 Chapter 1.
 [3
 
-])
+]
 LaTeX Font Info:    Font shape `TU/SongtiSCLight(0)/m/sl' in size <10.53937> no
 t available
 (Font)              Font shape `TU/SongtiSCLight(0)/m/it' tried instead on inpu
-t line 6.
- [4] (./main.aux (./src/titlepage.aux) (./src/body.aux)) ) 
+t line 20.
+ [4]
+Chapter 2.
+) [5
+
+] (./main.aux (./src/titlepage.aux) (./src/body.aux)) ) 
 Here is how much of TeX's memory you used:
  8638 strings out of 475865
  222606 string characters out of 5802056
- 563813 words of memory out of 5000000
+ 564813 words of memory out of 5000000
  29545 multiletter control sequences out of 15000+600000
  476785 words of font info for 87 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  96i,5n,102p,393b,441s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (5 pages).
+Output written on main.pdf (6 pages).
