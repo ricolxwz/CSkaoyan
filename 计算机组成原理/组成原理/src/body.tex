@@ -1,0 +1,242 @@
+\chapter{指令:计算机的语言}
+\section{引言}
+\paragraph{指令集}~{一个给定的计算机体系结构所包含的指令集合} 
+\paragraph{汇编语言和机器语言}~{前者是编程的书写形式, 后者是计算机所能识别的形式} 
+\paragraph{存储程序}~{多种类型的指令和数据均以数字形式存储在存储器(内存)中}
+\paragraph{MIPS}~{是一种汇编语言, 属于精简指令集}
+\section{硬件操作}
+\subsection{MIPS汇编指令}
+\begin{itemize}
+\item 每条MIPS算数运算指令只执行一个操作
+\item 一行写一条命令
+\item \#后是注释
+\end{itemize}
+\subsection{高级语言与编译语言之间的关系}
+高级语言经过编译器编译, 形成汇编语言.
+\section{MIPS寄存器及常用指令}
+高级语言的变量数量不受限制, 而汇编语言逻辑运算指令的变量对应寄存器, 而寄存器数量有限, 故变量数量受限.
+\subsection{寄存器}
+\begin{itemize}
+\item 共有\verb|32|个寄存器, 编号为\verb|0-31|
+\item \verb|32bit|数据称为一个``字'', \verb|32|位为字长, 每个字\verb|4|字节
+\item 按字节编址
+\item 寄存器分类型:
+\begin{itemize}
+\item \verb|$ZERO|: 恒为\verb|0|
+\item \verb|$v0-$v1|: 返回值
+\item \verb|$a0-$a3|: 参数
+\item \verb|$t0-$t9|: 临时变量, 其中\verb|$t0-$t7|对应编号\verb|8-15|, \verb|$t8-$t9|对应编号\verb|24-25|, 无需压栈
+\item \verb|$s0-$s7|: 保留变量, 对应编号\verb|16-23|, 必须压栈
+\item \verb|$gp|: 静态数据的全局指针
+\item \verb|$sp|: 栈指针
+\item \verb|$fp|: 帧指针
+\item \verb|$ra|: 返回地址
+\end{itemize}
+\end{itemize}
+\subsection{常见指令}
+复杂的数据结构(数组等)存储于存储器中, 需要用数据传输指令交换数据:
+\begin{itemize}
+\item \verb|lw rt, shamt(rs)|: 取数
+\item \verb|sw rs, shamt(rt)|: 存数
+\end{itemize}\par
+数据被存储到寄存器后, 可以进行相加减:
+\begin{itemize}
+\item \verb|add rd, rs, rt|: 加法
+\item \verb|sub rd, rs, rt|: 减法
+\end{itemize}\par
+我们经常要在加减运算的时候用到常数, 这样就会导致计算机会去内存中取出这个常数存储到寄存器这一多余的步骤, 可以通过立即数以除去这一过程:
+\begin{itemize}
+\item \verb|addi rt, rs, constant|: 加立即数
+\item \verb|-addi rt, rs, constant|: 没有减立即数, 用这个替代
+\end{itemize}\par 
+特殊的, 如果我们要进行寄存器间的赋值, 可以通过\verb|add|或者\verb|addi|实现:
+\begin{itemize}
+\item \verb|add rd, rs, $ZERO|: 将\verb|rs|赋值给\verb|rd|
+\item \verb|addi rt, rs, 0|: 将\verb|rs|赋值给\verb|rt|
+\end{itemize}
+\section{MIPS指令格式}
+指令包含操作码和地址码.
+\subsection{R型指令}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|Z|Z|Z|Z|Z|Z|}
+\hline
+op & rs & rt & rd & shamt & funct  \\
+\hline
+\end{tabularx}
+\end{table} \par 
+他们的作用:
+\begin{itemize}
+\item \verb|op|: 操作码
+\item \verb|rs|: 第一个源寄存器号
+\item \verb|rt|: 第二个源寄存器号
+\item \verb|rd|: 目标寄存器号
+\item \verb|shamt|: 位移量
+\item \verb|funct|: 功能码(与\verb|op|一起起作用)
+\end{itemize} \par 
+他们的位数:
+\begin{itemize}
+\item \verb|op|: \verb|6|位, 因为有\verb|64|种指令
+\item \verb|rs,rt,rd|: \verb|5|位, 因为有\verb|32|个寄存器
+\item \verb|shamt|: \verb|5|位, 因为MIPS是\verb|32|位指令
+\item \verb|funct|: \verb|6|位, 因为\verb|32-6-5-5-5-5=6|
+\end{itemize}\par
+上述操作码可以查询表格, 寄存器号需要记忆, 下面也一样.
+\subsection{I型指令}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|Z|Z|Z|p{15em}<{\centering}|}
+\hline
+op & rs & rt & constant or address \\
+\hline
+\end{tabularx}
+\end{table}\par
+他们的作用:
+\begin{itemize}
+\item \verb|op|: 操作码
+\item \verb|rs|: 源寄存器号
+\item \verb|rt|: 目标寄存器号
+\item \verb|constant or address|: 偏移量
+\end{itemize}\par
+他们的位数:
+\begin{itemize}
+\item \verb|op|: \verb|6|位, 因为有\verb|64|种指令
+\item \verb|rs,rt|: \verb|5|位, 因为有\verb|32|个寄存器
+\item \verb|constant or address|: \verb|16|位, 因为\verb|32-6-5-5=16|
+\end{itemize}
+\subsection{J型指令}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|Z|Z|}
+\hline
+op & address \\
+\hline
+\end{tabularx}
+\end{table}\par
+他们的作用:
+\begin{itemize}
+\item \verb|op|: 操作码
+\item \verb|address|: 地址
+\end{itemize}\par
+他们的位数:
+\begin{itemize}
+\item \verb|op|: \verb|6|位, 因为有\verb|64|种指令
+\item \verb|address|: \verb|26|位, 因为\verb|32-6=26|
+\end{itemize}
+\section{MIPS逻辑操作}
+\subsection{指令}
+逻辑移动指令:
+\begin{itemize}
+\item \verb|sll rd, rt, shamt|: 逻辑左移指令, \verb|rt|中的数左移\verb|shamt|位, 空出的位补\verb|0|, 结果存\verb|rd|
+\item \verb|srl rd, rt, shamt|: 逻辑右移指令, \verb|rt|中的数右移\verb|shamt|位, 空出的位补\verb|0|, 结果存\verb|rd|
+\end{itemize}\par
+上述指令为R型指令, 其中\verb|op|都为\verb|0|, \verb|func|分别为\verb|0|和\verb|6|, \verb|shamt|为位移量, \verb|rs|不使用为0. \par
+逻辑运算指令:
+\begin{itemize}
+\item \verb|add rd, rs, rt|: 逻辑与指令, \verb|rs|和\verb|rt|按位与, 结果存\verb|rd|
+\item \verb|or rd, rs, rt|: 逻辑或指令, \verb|rs|和\verb|rt|按位或, 结果存\verb|rd|
+\item \verb|nor rd, rs, rt|: 逻辑或非指令, \verb|rs|和\verb|rt|按位或非, 结果存\verb|rd|
+\end{itemize}\par
+上述指令为R型指令, \verb|op|都为\verb|0|, \verb|func|分别为\verb|20|,\verb|25|,\verb|27|, \verb|shamt|全为\verb|0|.
+\section{MIPS决策指令}
+\subsection{指令}
+\verb|bne|和\verb|beq|指令:
+\begin{itemize}
+\item \verb|beq rs, rt, L1|: 如果\verb|rs=rt|跳转到标签为\verb|L1|的指令
+\item \verb|bne rs, rt, L1|: 如果\verb|rs!=rt|跳转到标签为\verb|L1|的指令
+\item \verb|j L1|: 无条件转移到标签为\verb|L1|的指令
+\end{itemize}\par
+前两条为I型指令, \verb|op|分别为\verb|4|,\verb|5|,\verb|2|. 最后一条指令为J型指令.\par
+\verb|slt|和\verb|slti|指令:
+\begin{itemize}
+\item \verb|slt $rd, $rs, $rt|: 若\verb|rs<rt|, 则\verb|rd=1|, 否则\verb|rd=0|
+\item \verb|slti $rt, $rs, constant|: 若\verb|rs<constant|, 则\verb|rd=1|, 否则\verb|rd=0|
+\end{itemize}
+\subsection{条件分支代码转MIPS}
+将以下代码:
+\begin{lstlisting}
+# f,g,h,i,j存储于$s0,$s1,$s2,$s3,$s4
+if (i == j) f = g + h;
+else f = g - h;
+\end{lstlisting}\par
+转换为MIPS:
+\begin{lstlisting}
+       bne $s3, $s4 ELSE
+       add $s0, $s1, $s2
+       j EXIT
+ELSE: $s0, $s1, $s2
+EXIT: ...
+\end{lstlisting}
+\subsection{循环代码转MIPS}
+将以下代码:
+\begin{lstlisting}
+while (save[i] == k) i += 1; # i存于$s3, k存于$s5, save的基址存于$s6
+\end{lstlisting}\par
+转为MIPS:
+\begin{lstlisting}
+LOOP: sll $t0, $s3, 2 # $t0 = i * 4, 找到地址
+       add $t0, $s6, $t0 # $t0 = 基址 + 偏移量
+       lw $t1, 0($t0) # 从内存中取出数存到$t1
+       bne $t1, $s5, EXIT # 若和k不相等退出
+       addi $s3, $s3, 1 # 循环体
+       j LOOP # 实现循环
+EXIT: ...
+\end{lstlisting}
+\section{MIPS函数}
+\subsection{指令}
+\begin{itemize}
+\item \verb|jal Address|: 跳转到函数地址, 并将\verb|PC+4|存储于\verb|$ra|以便返回断点处
+\item \verb|jr $ra|: 返回断点处
+\end{itemize}
+\subsection{栈}
+我们使用任何寄存器需要保存它原来的值(类似于中断保存现场), 用完了再把原来的值放回去, 因为寄存器的数量是有限的. \par 
+一般来说, \verb|$s|开头的寄存器必须压栈, \verb|$t|/\verb|$a|开头的寄存器不必压栈.
+\subsubsection{压栈和出栈}
+由于栈的增长是按地址从高到低的顺序进行的, 所以出栈和入栈的操作分别为:
+\begin{enumerate}
+\item 入栈(\verb|push|): \verb|$sp=$sp-4|
+\item 出栈(\verb|pop|): \verb|$sp=$sp+4|
+\end{enumerate}
+\subsection{函数代码转MIPS}
+将以下代码:
+\begin{lstlisting}
+int leaf_example (int g, h, i, j)
+{
+    int f;
+    f = (g + h) - (i + j);
+    return f;
+}
+\end{lstlisting}
+转换为MIPS:
+\begin{lstlisting}
+# 入栈
+addi $sp, $sp, -12
+sw $t1, 8($sp)
+sw $t0, 4($sp)
+sw $s0, 0($sp)
+# 运算
+add $t0, $a0, $a1
+add $t1, $a2, $a3
+add $s0, $t0, $t1
+addi $v0, $s0, $ZERO # 将结果$s0放到函数返回值寄存器$v0
+# 出栈
+lw $s0, 0($sp)
+lw $t0, 4($sp)
+lw $t1, 8($sp)
+addi $sp, $sp, 12
+# 返回
+jr $ra
+\end{lstlisting}
+\section{MIPS嵌套}
+不调用其他过程的过程称为\textbf{叶过程}, 嵌套调用就是过程体中调用其他的过程(甚至包括自己)
+\section{寻址方式}
+寻址方式就是根据地址找到指令或者操作数的方法.
+
+
+
+
+
+
+
+
+

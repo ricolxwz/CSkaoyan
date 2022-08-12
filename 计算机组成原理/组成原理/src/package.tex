@@ -1,0 +1,55 @@
+\PassOptionsToPackage{AutoFakeBold}{xeCJK}
+\PassOptionsToPackage{quiet}{fontspec}
+\usepackage[UTF8]{ctex}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{tabularx}
+\newcolumntype{Z}{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}X}
+\usepackage{indentfirst}
+\setlength{\parindent}{0em}
+\usepackage{floatrow}
+\floatsetup[table]{font={large, tt}}
+\usepackage{bm}
+\usepackage{float}
+\usepackage{array}
+\usepackage{threeparttable}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{pifont}
+\usepackage{hyperref}
+\hypersetup{hypertex=true,
+colorlinks=true,
+linkcolor=blue,
+anchorcolor=blue,
+citecolor=blue}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{tcolorbox}
+\usepackage{subcaption}
+\pgfplotsset{compat=newest}
+\DeclareMathOperator{\arccot}{arccot}
+\usepackage{scalerel}
+\usetikzlibrary{external}
+\tikzset{
+external/system call={
+xelatex \tikzexternalcheckshellescape
+-halt-on-error -interaction=batchmode --shell-escape
+-jobname "\image" "\texsource"}}
+\tikzexternalize[prefix=tikz/]
+\usepackage{geometry}
+\geometry{scale=0.7}
+\usepackage{listings}
+\lstset{
+basicstyle=\ttfamily,
+keywordstyle=\bfseries,
+commentstyle=\rmfamily\itshape,
+stringstyle=\ttfamily,
+flexiblecolumns,
+numbers=left,
+showspaces=false,
+numberstyle=\zihao{-5}\ttfamily,
+showstringspaces=false,
+captionpos=t,
+frame=lrtb,
+}
