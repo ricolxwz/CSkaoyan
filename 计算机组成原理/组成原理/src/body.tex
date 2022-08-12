@@ -206,7 +206,7 @@ int leaf_example (int g, h, i, j)
     f = (g + h) - (i + j);
     return f;
 }
-\end{lstlisting}
+\end{lstlisting}\par
 转换为MIPS:
 \begin{lstlisting}
 # 入栈
@@ -228,11 +228,60 @@ addi $sp, $sp, 12
 jr $ra
 \end{lstlisting}
 \section{MIPS嵌套}
-不调用其他过程的过程称为\textbf{叶过程}, 嵌套调用就是过程体中调用其他的过程(甚至包括自己)
+不调用其他过程的过程称为\textbf{叶过程}, 嵌套调用就是过程体中调用其他的过程(甚至包括自己) \par
+首先要知道, 递归分为两个阶段: 递归阶段和返回阶段. \par
+假设主程序将参数\verb|3|传入寄存器\verb|$a0|, 然后使用\verb|jal A|调用过程\verb|A|. 再假设过程\verb|A|通过\verb|jal B|调用过程\verb|B|, 参数为\verb|7|, 同样存入\verb|$a0|. 由于\verb|A|尚未完成任务, 所以寄存器\verb|$a0|的使用上存在冲突. 同样, 在寄存器\verb|$ra|保存的返回地址上也存在冲突, 因为它现在保存的是\verb|B|的返回地址. 所以我们必须采用压栈的方式对数据进行保存: \par
+Caller把所有在返回阶段需要用到的参数寄存器(\verb|$a0-$a3|)或临时寄存器\verb|$t0-$t9|压栈. Callee把将所有在返回阶段要用到的返回地址寄存器\verb|$ra|和保存寄存器\verb|$s0-$s7|都压栈. 栈指针\verb|$sp|会随诊栈中寄存器的个数调整. 到返回的时候, 寄存器就会从存储器中恢复, 栈指针也会重新调整.
+\subsection{递归代码转MIPS}
+将以下代码:
+\begin{lstlisting}
+int fact(int n)
+{
+    if (n < 1) return (1);
+        else return (n * fact(n - 1));
+}
+\end{lstlisting}\par
+转换为MIPS:
+\begin{lstlisting}
+fact:
+      addi $sp, $sp, -8
+      sw $ra, 4($sp)
+      sw $a0, 0($sp)
+      slti $t0, $a0, 1
+      beq $t0, $ZERO, L1
+      addi $v0, $ZERO, 1
+      addi $sp, $sp, 8
+      jr $ra
+      # 申请一块大小为8的空间
+      # 将返回阶段要用到的Caller的返回地址存储到栈
+      # 将返回阶段要用到的Callee的参数存储到栈
+      # 如果$a0也就是n大于等于1, 则跳到L1
+      # 如果$a0也就是n小于1, 则递归阶段到达最底层, 计算0!=1并保存结果
+      # 由于是最底层函数, 其$ra和$a0不会被下一层调用, 所以可以直接释放栈
+      # 最底层函数返回
+L1:
+      addi $a0, $a0, -1
+      jal fact
+      lw $a0, 0($sp)
+      lw $ra, 4($sp)
+      addi $sp, $sp, 8
+      mul $v0, $a0, $v0
+      jr $ra
+      # 设置下一层调用函数的参数为n-1
+      # 返回fact, 执行fact(n-1)
+      # 开始返回阶段, 将递归阶段存储的$a0取出
+      # 开始返回阶段, 将递归阶段存储的$ra取出
+      # 释放栈
+      # 根据刚取出的$a0和$v0相乘
+      # 函数返回
+\end{lstlisting}\par 
+过程示意图:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.5]{img/figure2.png}
+\end{figure}
 \section{寻址方式}
 寻址方式就是根据地址找到指令或者操作数的方法.
-
-
 
 
 

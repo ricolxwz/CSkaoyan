@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.7.20)  12 AUG 2022 13:56
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.7.20)  12 AUG 2022 20:13
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1259,19 +1259,22 @@ LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <10.53937> not available
 
 
 ]
+LaTeX Font Info:    Font shape `TU/SongtiSCLight(0)/m/sl' in size <10.53937> no
+t available
+(Font)              Font shape `TU/SongtiSCLight(0)/m/it' tried instead on inpu
+t line 6.
+ [2]
 \openout2 = `body.aux'.
 
  (./body.tex
 Chapter 1.
-[2
+[3
 
 
-]
-LaTeX Font Info:    Font shape `TU/SongtiSCLight(0)/m/sl' in size <10.53937> no
-t available
-(Font)              Font shape `TU/SongtiSCLight(0)/m/it' tried instead on inpu
-t line 50.
- [3] [4] [5] [6] [7] [8]) [9]
+] [4] [5] [6] [7] [8] [9] [10]
+File: img/figure2.png Graphic file (type bmp)
+<img/figure2.png>
+ [11]) [12]
 (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/main.aux
 (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/titlepage.aux)
 (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/body.aux))
@@ -1279,23 +1282,17 @@ t line 50.
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.41063pt have occurred.
 
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: 5685B4DA0624990B13F61AAF0D8A9C71;2331
-(rerunfilecheck)             After:  78B0F1107225B8FEAF71562D5BB15444;2418.
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 93054F9F635AACD1107DDCF881767663;2540.
  ) 
 Here is how much of TeX's memory you used:
- 41788 strings out of 475865
- 1024509 string characters out of 5802056
- 1454072 words of memory out of 5000000
- 62139 multiletter control sequences out of 15000+600000
+ 41801 strings out of 475865
+ 1024731 string characters out of 5802056
+ 1455072 words of memory out of 5000000
+ 62150 multiletter control sequences out of 15000+600000
  482820 words of font info for 112 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  96i,10n,102p,744b,1704s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on /Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/main.pdf (10 p
+Output written on /Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/main.pdf (13 p
 ages).

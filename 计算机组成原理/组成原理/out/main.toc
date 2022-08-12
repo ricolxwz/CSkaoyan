@@ -1,29 +1,30 @@
-\contentsline {chapter}{\numberline {1}指令:计算机的语言}{2}{chapter.1}%
-\contentsline {section}{\numberline {1.1}引言}{2}{section.1.1}%
-\contentsline {paragraph}{指令集}{2}{section*.2}%
-\contentsline {paragraph}{汇编语言和机器语言}{2}{section*.3}%
-\contentsline {paragraph}{存储程序}{2}{section*.4}%
-\contentsline {paragraph}{MIPS}{2}{section*.5}%
-\contentsline {section}{\numberline {1.2}硬件操作}{2}{section.1.2}%
-\contentsline {subsection}{\numberline {1.2.1}MIPS汇编指令}{2}{subsection.1.2.1}%
-\contentsline {subsection}{\numberline {1.2.2}高级语言与编译语言之间的关系}{2}{subsection.1.2.2}%
-\contentsline {section}{\numberline {1.3}MIPS寄存器及常用指令}{3}{section.1.3}%
-\contentsline {subsection}{\numberline {1.3.1}寄存器}{3}{subsection.1.3.1}%
-\contentsline {subsection}{\numberline {1.3.2}常见指令}{3}{subsection.1.3.2}%
-\contentsline {section}{\numberline {1.4}MIPS指令格式}{4}{section.1.4}%
-\contentsline {subsection}{\numberline {1.4.1}R型指令}{4}{subsection.1.4.1}%
-\contentsline {subsection}{\numberline {1.4.2}I型指令}{5}{subsection.1.4.2}%
-\contentsline {subsection}{\numberline {1.4.3}J型指令}{5}{subsection.1.4.3}%
-\contentsline {section}{\numberline {1.5}MIPS逻辑操作}{6}{section.1.5}%
-\contentsline {subsection}{\numberline {1.5.1}指令}{6}{subsection.1.5.1}%
-\contentsline {section}{\numberline {1.6}MIPS决策指令}{6}{section.1.6}%
-\contentsline {subsection}{\numberline {1.6.1}指令}{6}{subsection.1.6.1}%
-\contentsline {subsection}{\numberline {1.6.2}条件分支代码转MIPS}{7}{subsection.1.6.2}%
-\contentsline {subsection}{\numberline {1.6.3}循环代码转MIPS}{7}{subsection.1.6.3}%
-\contentsline {section}{\numberline {1.7}MIPS函数}{7}{section.1.7}%
-\contentsline {subsection}{\numberline {1.7.1}指令}{7}{subsection.1.7.1}%
-\contentsline {subsection}{\numberline {1.7.2}栈}{8}{subsection.1.7.2}%
-\contentsline {subsubsection}{压栈和出栈}{8}{section*.9}%
-\contentsline {subsection}{\numberline {1.7.3}函数代码转MIPS}{8}{subsection.1.7.3}%
-\contentsline {section}{\numberline {1.8}MIPS嵌套}{9}{section.1.8}%
-\contentsline {section}{\numberline {1.9}寻址方式}{9}{section.1.9}%
+\contentsline {chapter}{\numberline {1}指令:计算机的语言}{3}{chapter.1}%
+\contentsline {section}{\numberline {1.1}引言}{3}{section.1.1}%
+\contentsline {paragraph}{指令集}{3}{section*.2}%
+\contentsline {paragraph}{汇编语言和机器语言}{3}{section*.3}%
+\contentsline {paragraph}{存储程序}{3}{section*.4}%
+\contentsline {paragraph}{MIPS}{3}{section*.5}%
+\contentsline {section}{\numberline {1.2}硬件操作}{3}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}MIPS汇编指令}{3}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}高级语言与编译语言之间的关系}{3}{subsection.1.2.2}%
+\contentsline {section}{\numberline {1.3}MIPS寄存器及常用指令}{4}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}寄存器}{4}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}常见指令}{4}{subsection.1.3.2}%
+\contentsline {section}{\numberline {1.4}MIPS指令格式}{5}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}R型指令}{5}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}I型指令}{6}{subsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.4.3}J型指令}{6}{subsection.1.4.3}%
+\contentsline {section}{\numberline {1.5}MIPS逻辑操作}{7}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}指令}{7}{subsection.1.5.1}%
+\contentsline {section}{\numberline {1.6}MIPS决策指令}{7}{section.1.6}%
+\contentsline {subsection}{\numberline {1.6.1}指令}{7}{subsection.1.6.1}%
+\contentsline {subsection}{\numberline {1.6.2}条件分支代码转MIPS}{8}{subsection.1.6.2}%
+\contentsline {subsection}{\numberline {1.6.3}循环代码转MIPS}{8}{subsection.1.6.3}%
+\contentsline {section}{\numberline {1.7}MIPS函数}{8}{section.1.7}%
+\contentsline {subsection}{\numberline {1.7.1}指令}{8}{subsection.1.7.1}%
+\contentsline {subsection}{\numberline {1.7.2}栈}{9}{subsection.1.7.2}%
+\contentsline {subsubsection}{压栈和出栈}{9}{section*.9}%
+\contentsline {subsection}{\numberline {1.7.3}函数代码转MIPS}{9}{subsection.1.7.3}%
+\contentsline {section}{\numberline {1.8}MIPS嵌套}{10}{section.1.8}%
+\contentsline {subsection}{\numberline {1.8.1}递归代码转MIPS}{10}{subsection.1.8.1}%
+\contentsline {section}{\numberline {1.9}寻址方式}{12}{section.1.9}%
