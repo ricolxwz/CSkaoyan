@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.7.20)  12 AUG 2022 20:13
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.7.20)  13 AUG 2022 13:02
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1274,8 +1274,27 @@ Chapter 1.
 ] [4] [5] [6] [7] [8] [9] [10]
 File: img/figure2.png Graphic file (type bmp)
 <img/figure2.png>
- [11]) [12]
-(/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/main.aux
+ [11]
+Overfull \hbox (11.4743pt too wide) in paragraph at lines 290--291
+[]\TU/SongtiSCLight(0)/m/n/10.53937 相 对 寻 址\TU/lmr/m/n/10.53937 : \TU/SongtiSCL
+ight(0)/m/n/10.53937 将 程 序 计 数 器[][]\TU/lmtt/m/n/10.53937 PC[]\TU/SongtiSCLight
+(0)/m/n/10.53937 的 内 容 和 指 令 中 的 形 式 地 址[][]\TU/lmtt/m/n/10.53937 A[]\TU/Songti
+SCLight(0)/m/n/10.53937 相 加 得 到 真 实 地 址[][]\TU/lmtt/m/n/10.53937 EA[]\TU/lmr/m/
+n/10.53937 , \TU/SongtiSCLight(0)/m/n/10.53937 即[][]\TU/lmtt/m/n/10.53937 (PC)+
+A=EA 
+ []
+
+
+Overfull \hbox (11.4743pt too wide) in paragraph at lines 291--292
+[]\TU/SongtiSCLight(0)/m/n/10.53937 基 址 寻 址\TU/lmr/m/n/10.53937 : \TU/SongtiSCL
+ight(0)/m/n/10.53937 将 基 址 寄 存 器[][]\TU/lmtt/m/n/10.53937 BR[]\TU/SongtiSCLight
+(0)/m/n/10.53937 的 内 容 和 指 令 中 的 形 式 地 址[][]\TU/lmtt/m/n/10.53937 A[]\TU/Songti
+SCLight(0)/m/n/10.53937 相 加 得 到 真 实 地 址[][]\TU/lmtt/m/n/10.53937 EA[]\TU/lmr/m/
+n/10.53937 , \TU/SongtiSCLight(0)/m/n/10.53937 即[][]\TU/lmtt/m/n/10.53937 (BR)+
+A=EA 
+ []
+
+) [12] (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/main.aux
 (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/titlepage.aux)
 (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/body.aux))
 
