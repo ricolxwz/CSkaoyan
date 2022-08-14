@@ -330,7 +330,7 @@ L1:
 每三个二进制位对应一个八进制位
 \subsubsection{二进制$ \leftrightarrow $十六进制}
 每四个二进制位对应一个十六进制位
-\section{定点数的表示和运算}
+\section{定点数的表示}
 \subsection{数的分类}
 \begin{itemize}
 \item 有符号数
@@ -373,10 +373,45 @@ L1:
 \subsection{补码}
 \begin{enumerate}
 \item 含义 \par
-先将原码转化为反码, 再将数值位\verb|+1|. 或者, 将原码直接转为补码: 从后往前, 遇到的第一个\verb|1|之前不变, 后面取反(符号位不变)
+先将原码转化为反码, 再将数值位\verb|+1|. \par 或者, 将原码直接转为补码: 从后往前, 遇到的第一个\verb|1|之前不变, 后面取反(符号位不变), 反过来补码转原码也是如此.
 \item 范围 \par
 \verb|0|的表示方法唯一, (\verb|[0]=0,0000000, 1,0000000用于表示-128|), 范围为\verb|-2^n~2^n-1|, \verb|n|为尾数长度
 \item 示例 \par
 机器字长为\verb|8|位, 将真值\verb|x=-14|转换为补码: 原码为\verb|[x]原=1,0001110|, 从右往左第一个\verb|1|不变, 左边取反, 得到补码\verb|[x]补=1,1110010|
-\end{enumerate}
-
+\end{enumerate} \par 比较这两个数字的大小: \verb|1,1111111|和\verb|1,0000000|, 前者大, 因为前者转换为真值是\verb|1|, 而后者转化为真值为\verb|-128|
+\section{定点数的运算}
+\subsection{移位运算}
+左移相当于\verb|*2|, 右移相当于\verb|/2|
+\begin{itemize}
+\item 逻辑移位: 无符号数, 当成正数, 补\verb|0|
+\item 算术移位: 有符号数, 有正有负
+\begin{itemize}
+\item 正数: 原码, 反码, 补码数值位均补\verb|0|, 符号位不参与移位
+\item 负数: 原码补\verb|0|, 反码补\verb|1|, 补码如果是左移, 补\verb|0|; 如果是右移, 补\verb|1|, 符号位不参与移位
+\end{itemize}
+\end{itemize}
+\subsection{加减运算}
+\begin{itemize}
+\item 原码的加减运算
+\begin{itemize}
+\item 加法运算
+\begin{itemize}
+\item 正+正: 绝对值做加法, 符号位为\verb|0|
+\item 负+负: 绝对值做加法, 符号位为\verb|1|
+\item 正+负: 绝对值大的减绝对值小的, 符号位同绝对值大的数
+\item 负+正: 绝对值大的减绝对值小的, 符号位同绝对值大的数
+\end{itemize}
+\item 减法运算: 减数的符号位取反, 转变为加法
+\end{itemize}
+\item 补码的加减运算
+\begin{itemize}
+\item 加法运算: \verb|[A+B]补=[A]补+[B]补|
+\item 减法运算: \verb|[A-B]补=[A]补+[-B]补|
+\end{itemize}
+\end{itemize}
+\section{浮点数的表示和运算}
+\subsubsection{浮点数的表示格式}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.5]{img/figure9.pdf}
+\end{figure}
