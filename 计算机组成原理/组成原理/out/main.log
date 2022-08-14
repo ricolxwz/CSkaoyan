@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.7.20)  13 AUG 2022 13:02
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.7.20)  14 AUG 2022 15:37
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1250,15 +1250,14 @@ LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <26.09749> not available
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <10.53937> not available
 (Font)              size <10.95> substituted on input line 2.
 
-)
+[1
+
+
+
+])
 \tf@toc=\write5
 \openout5 = `main.toc'.
 
- [1
-
-
-
-]
 LaTeX Font Info:    Font shape `TU/SongtiSCLight(0)/m/sl' in size <10.53937> no
 t available
 (Font)              Font shape `TU/SongtiSCLight(0)/m/it' tried instead on inpu
@@ -1275,7 +1274,19 @@ Chapter 1.
 File: img/figure2.png Graphic file (type bmp)
 <img/figure2.png>
  [11]
-Overfull \hbox (11.4743pt too wide) in paragraph at lines 290--291
+File: img/figure3.png Graphic file (type bmp)
+<img/figure3.png>
+File: img/figure4.png Graphic file (type bmp)
+<img/figure4.png>
+File: img/figure5.png Graphic file (type bmp)
+<img/figure5.png>
+ [12]
+File: img/figure6.png Graphic file (type bmp)
+<img/figure6.png>
+File: img/figure7.png Graphic file (type bmp)
+<img/figure7.png>
+
+Overfull \hbox (11.4743pt too wide) in paragraph at lines 306--310
 []\TU/SongtiSCLight(0)/m/n/10.53937 相 对 寻 址\TU/lmr/m/n/10.53937 : \TU/SongtiSCL
 ight(0)/m/n/10.53937 将 程 序 计 数 器[][]\TU/lmtt/m/n/10.53937 PC[]\TU/SongtiSCLight
 (0)/m/n/10.53937 的 内 容 和 指 令 中 的 形 式 地 址[][]\TU/lmtt/m/n/10.53937 A[]\TU/Songti
@@ -1284,8 +1295,10 @@ n/10.53937 , \TU/SongtiSCLight(0)/m/n/10.53937 即[][]\TU/lmtt/m/n/10.53937 (PC)
 A=EA 
  []
 
+File: img/figure8.png Graphic file (type bmp)
+<img/figure8.png>
 
-Overfull \hbox (11.4743pt too wide) in paragraph at lines 291--292
+Overfull \hbox (11.4743pt too wide) in paragraph at lines 311--315
 []\TU/SongtiSCLight(0)/m/n/10.53937 基 址 寻 址\TU/lmr/m/n/10.53937 : \TU/SongtiSCL
 ight(0)/m/n/10.53937 将 基 址 寄 存 器[][]\TU/lmtt/m/n/10.53937 BR[]\TU/SongtiSCLight
 (0)/m/n/10.53937 的 内 容 和 指 令 中 的 形 式 地 址[][]\TU/lmtt/m/n/10.53937 A[]\TU/Songti
@@ -1294,7 +1307,21 @@ n/10.53937 , \TU/SongtiSCLight(0)/m/n/10.53937 即[][]\TU/lmtt/m/n/10.53937 (BR)
 A=EA 
  []
 
-) [12] (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/main.aux
+[13]
+Chapter 2.
+[14
+
+] [15]
+Overfull \hbox (0.17722pt too wide) in paragraph at lines 369--370
+[][][]\TU/lmtt/m/n/10.53937 0[]\TU/SongtiSCLight(0)/m/n/10.53937 表 示 方 法 不 唯 一\
+TU/lmr/m/n/10.53937 , ([][]\TU/lmtt/m/n/10.53937 [+0]\TU/STFangsong(0)/m/n/10.5
+3937 反\TU/lmtt/m/n/10.53937 =0,0000000, [-0]\TU/STFangsong(0)/m/n/10.53937 反\TU
+/lmtt/m/n/10.53937 =1,1111111[]\TU/lmr/m/n/10.53937 ), \TU/SongtiSCLight(0)/m/n
+/10.53937 范 围 为[][]\TU/lmtt/m/n/10.53937 -2^n-1~2^n-1[]\TU/lmr/m/n/10.53937 , [
+][]\TU/lmtt/m/n/10.53937 n[]\TU/SongtiSCLight(0)/m/n/10.53937 为
+ []
+
+) [16] (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/main.aux
 (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/titlepage.aux)
 (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/body.aux))
 
@@ -1302,16 +1329,16 @@ LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.41063pt have occurred.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 93054F9F635AACD1107DDCF881767663;2540.
+(rerunfilecheck)             Checksum: 41F73A4D73DDF40E8A5D4046CEFEE836;3552.
  ) 
 Here is how much of TeX's memory you used:
- 41801 strings out of 475865
- 1024731 string characters out of 5802056
- 1455072 words of memory out of 5000000
- 62150 multiletter control sequences out of 15000+600000
+ 41875 strings out of 475865
+ 1026080 string characters out of 5802056
+ 1456072 words of memory out of 5000000
+ 62215 multiletter control sequences out of 15000+600000
  482820 words of font info for 112 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  96i,10n,102p,744b,1704s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on /Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/main.pdf (13 p
+Output written on /Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/main.pdf (17 p
 ages).
