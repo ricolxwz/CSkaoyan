@@ -379,6 +379,9 @@ L1:
 \item 示例 \par
 机器字长为\verb|8|位, 将真值\verb|x=-14|转换为补码: 原码为\verb|[x]原=1,0001110|, 从右往左第一个\verb|1|不变, 左边取反, 得到补码\verb|[x]补=1,1110010|
 \end{enumerate} \par 比较这两个数字的大小: \verb|1,1111111|和\verb|1,0000000|, 前者大, 因为前者转换为真值是\verb|1|, 而后者转化为真值为\verb|-128|
+\subsection{移码}
+移码=真值+偏置值, 若机器字长为\verb|n+1|位, 则偏置值为\verb|+2^n|, 当偏置值为\verb|+128|的时候: 补码=补码的符号位取反. \par
+偏置值可以取其他值.
 \section{定点数的运算}
 \subsection{移位运算}
 左移相当于\verb|*2|, 右移相当于\verb|/2|
@@ -386,10 +389,11 @@ L1:
 \item 逻辑移位: 无符号数, 当成正数, 补\verb|0|
 \item 算术移位: 有符号数, 有正有负
 \begin{itemize}
-\item 正数: 原码, 反码, 补码数值位均补\verb|0|, 符号位不参与移位
-\item 负数: 原码补\verb|0|, 反码补\verb|1|, 补码如果是左移, 补\verb|0|; 如果是右移, 补\verb|1|, 符号位不参与移位
+\item 正数: 符号位不参与移位, 原码, 反码, 补码数值位均补\verb|0|
+\item 负数: 符号位不参与移位, 原码补\verb|0|, 反码补\verb|1|, 补码如果是左移, 补\verb|0|; 如果是右移, 补\verb|1|
 \end{itemize}
-\end{itemize}
+\end{itemize} \par
+左移: 若舍弃的位为\verb|1|, 将产生严重误差; \par 右移: 若舍弃的位为\verb|1|, 将丢失精度.
 \subsection{加减运算}
 \begin{itemize}
 \item 原码的加减运算
@@ -410,8 +414,53 @@ L1:
 \end{itemize}
 \end{itemize}
 \section{浮点数的表示和运算}
-\subsubsection{浮点数的表示格式}
+\subsection{浮点数的表示格式}
+浮点数\verb|N=M*r^E|, 其中\verb|N|为浮点数, \verb|M|为尾数, \verb|E|为阶码, \verb|r|为基数, 二进制的话为\verb|2|, 上述数字均为十进制.
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.5]{img/figure9.pdf}
 \end{figure}
+\subsection{浮点数的规格化}
+规格化浮点数: 规定原码尾数的最高位一定要是个1$ \Leftrightarrow $ \texttt{|M|}属于\verb|[0.5,1]|, 所以衍生出以下两种规范化的方法:
+\begin{itemize}
+\item 左规: 说明\texttt{M<1/2}, 太小, 需要扩大, 左移\verb|1|位将数值位扩大到原来的\verb|2|倍, 同时阶码缩小到原来的\verb|1/2|倍
+\item 右规: 说明\texttt{M>1}, 太大, 需要缩小, 右移\verb|1|位将数值位缩小到原来的\verb|1/2|倍, 同时阶码扩大到原来的\verb|2|倍
+\end{itemize}\par
+尾数可以用原码或者是补码表示, 所以上述左规和右规可以分别用于原码或者补码的规格化:
+\begin{itemize}
+\item 原码: 尾数最高位为\verb|1|
+\begin{itemize}
+\item 尾数为正数: 通过左规和右规得到的标准形式应该是\verb|0.1XXXXXXXX|
+\item 尾数为负数: 通过左规和右规得到的标准形式应该是\verb|1.1XXXXXXXX|
+\end{itemize}\par
+注意, 上面尾数可以等于\verb|0.5|或者是\verb|-0.5|, 只要是\verb|0.1000000...|和\verb|1.1000000...|即可. 但是做不到等于\verb|1|或者\verb|-1|.
+\item 补码: 尾数最高位与符号位相反
+\begin{itemize}
+\item 尾数为正数: 通过左规和右规得到的标准形式应该是\verb|0.1XXXXXXXXX|
+\item 尾数为负数: 通过左规和右规得到的标准形式应该是\verb|1.0XXXXXXXXX|
+\end{itemize}
+\end{itemize}
+\subsection{\texttt{IEEE 754}标准}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
