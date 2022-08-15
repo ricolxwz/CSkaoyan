@@ -1,4 +1,4 @@
-\chapter{指令:计算机的语言}
+\chapter{指令}
 \section{引言}
 \paragraph{指令集}~{一个给定的计算机体系结构所包含的指令集合} 
 \paragraph{汇编语言和机器语言}~{前者是编程的书写形式, 后者是计算机所能识别的形式} 
@@ -314,7 +314,7 @@ L1:
 \includegraphics[scale=.6]{img/figure8}
 \end{figure}
 \end{enumerate}
-\chapter{计算机的算术运算}
+\chapter{运算}
 \section{进位计数制}
 \subsection{进位计数法}
 \verb|r|进制数, 每个数码位可能出现\verb|r|种字符, 逢\verb|r|进\verb|1|.
@@ -474,8 +474,49 @@ L1:
 \item 加减: \verb|0.75*2^4+0.75*2^4=1.5*2^4|
 \item 规格化: \verb|1.5*2^4|$ \rightarrow $\verb|0.75*2^5|
 \end{enumerate}
-
-
+\chapter{存储器}
+\section{存储器的层次}
+\begin{figure}[H]
+\centering
+\begin{minipage}{.35\textwidth}
+\includegraphics[scale=.3]{img/figure11.pdf}
+\end{minipage}
+\begin{minipage}{.48\textwidth}
+\flushleft
+\includegraphics[scale=.3]{img/figure12.pdf}
+\end{minipage}
+\caption*{多级存储器结构}
+\end{figure}
+这就是存储器的层次结构. 在\verb|pyramid|的越上层, 价格越高, 速度越快, 容量越小. 要注意的是, \verb|Cache|和主存之间的数据交换是由硬件完成的, 对所有程序员透明. 主存和辅存之间的数据交换是由硬件和操作系统共同完成的. 对应用程序员透明.
+\section{存储器的分类}
+\begin{itemize}
+\item 按层次分类
+\begin{itemize}
+\item 主存储器: 简称主存, 或者内存. 可以直接和\verb|Cache|交互
+\item 辅助存储器: 简称辅存, 或者外存. 是主存的后援存储器
+\item 高速缓冲存储器: 简称\verb|Cache|. 放在\verb|CPU|中
+\end{itemize}
+\item 按存取分类
+\begin{itemize}
+\item 随机存储器: \verb|RAM|, 可读可写, 存取时间和物理位置无关, 断电丢失数据
+\begin{itemize}
+\item 静态随机存储器: \verb|SRAM|, 双稳态触发器, 用于\verb|Cache|
+\item 动态最急存储器: \verb|DRAM|, 栅极电容, 用于内存
+\end{itemize}
+\item 只读存储器: \verb|ROM|, 只读, 存取时间和物理位置无关, 断电不丢失数据
+\item 串行访问存储器: 存储时间和物理位置有关, 如顺序存取存储器(磁带)与直接存取存储器(磁盘,光盘)
+\end{itemize}
+\item 按介质分类
+分为: 磁表面存储器(磁盘,磁带), 磁芯存储器, 半导体存储器(MOS型存储器,双极型存储器)和光存储器(光盘)
+\item 按可保存性分类
+\begin{itemize}
+\item 易失存储器: 断电后, 存储信息消失. 如: \verb|RAM|
+\item 非易失存储器: 断电后, 存储信息依然保持, 如: \verb|ROM|
+\item 破坏性读出: 某个存储单元被读出时, 原存储器信息被破坏
+\item 非破坏性读出: 某个存储单元被读出时, 原存储器信息不会被破坏
+\end{itemize}
+\end{itemize}
+\section{Cache}
 
 
 

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.7.20)  15 AUG 2022 15:14
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.7.20)  15 AUG 2022 18:23
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1329,20 +1329,39 @@ CLight(0)/m/n/10.53937 加 上 偏 置 值[][]\TU/lmtt/m/n/10.53937 +127[]\TU/lm
 制 为[][]\TU/lmtt/m/n/10.53937 01111101[]\TU/lmr/m/n/10.53937 . 
  []
 
-[17]) [18] (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/main.aux
+[17] [18]
+Chapter 3.
+File: img/figure11.pdf Graphic file (type pdf)
+<use img/figure11.pdf>
+File: img/figure12.pdf Graphic file (type pdf)
+<use img/figure12.pdf>
+
+Overfull \hbox (13.14424pt too wide) in paragraph at lines 486--487
+[]  
+ []
+
+[19
+
+]) [20] (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/main.aux
 (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/titlepage.aux)
 (/Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/body.aux))
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: C573A82E47DA191995F888D689A11350;4515.
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: 260FBA54A98A79137014F36F872B0631;4799
+(rerunfilecheck)             After:  6EE7D042C49AE0A46A90B3A65980AC9A;4768.
  ) 
 Here is how much of TeX's memory you used:
- 42432 strings out of 475865
- 1032823 string characters out of 5802056
- 1457578 words of memory out of 5000000
- 62750 multiletter control sequences out of 15000+600000
+ 42450 strings out of 475865
+ 1033203 string characters out of 5802056
+ 1456674 words of memory out of 5000000
+ 62766 multiletter control sequences out of 15000+600000
  485308 words of font info for 125 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  96i,10n,102p,744b,1702s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on /Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/main.pdf (19 p
+Output written on /Users/ricol/Desktop/CSkaoyan/计算机组成原理/组成原理/out/main.pdf (21 p
 ages).
