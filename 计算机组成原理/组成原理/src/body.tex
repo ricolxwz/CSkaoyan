@@ -516,7 +516,38 @@ L1:
 \item 非破坏性读出: 某个存储单元被读出时, 原存储器信息不会被破坏
 \end{itemize}
 \end{itemize}
-\section{Cache}
+\section{\texttt{Cache}}
+\verb|Cache|是由\verb|SRAM|构成的, 在\verb|CPU|中的一种存储器.
+\subsection{基本原理}
+操作系统为了缓和\verb|CPU|和主存之间的速度矛盾, 将某些主存块放到了\verb|Cache|中, 而这个步骤是基于局部性原理:
+\begin{itemize}
+\item 时间局部性: 现在访问的地址, 不久之后也很可能再次被访问
+\item 空间局部性: 现在访问的地址, 其附近的地址也很可能即将被访问
+\end{itemize}
+\subsection{性能分析}
+\verb|CPU|访问数据有两种方式: 先访问\verb|Cache|, 若未命中再访问主存或者是同时访问\verb|Cache|和主存, 若命中\verb|Cache|则停止访问主存, 这就引出了\verb|Cache|的性能衡量标准:
+\begin{itemize}
+\item 命中率 \par 设\verb|Cache|的总命中次数为\verb|a|, 访问主存的次数为\verb|b|, 则命中率\verb|=a/(a+b)|
+\item 缺失率 \par \verb|1-|命中率
+\end{itemize}
+\subsection{主存到\texttt{Cache}的映射}
+\verb|Cache|被分成与主存的页框大小一致的\verb|Cache|块(或称Cache行), 两者之间以块为单位进行数据交换. 下面解释了内存中的块应该放在\verb|Cache|中的哪个位置:
+\subsubsection{全相联映射}
+主存的块可以装入\verb|Cache|的任何位置, 没有公式. 相应的地址结构为:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.5]{img/figure13.pdf}
+\end{figure}
+\subsubsection{直接映射}
+主存中的块必须放入下面公式的指定位置:
+\begin{center}
+\verb|j = i mod 2^c|, 其中\verb|j|为\verb|Cache|块号, \verb|i|为主存块号, \verb|2^c|为\verb|Cache|的总块数
+\end{center} \par
+\par 从上面的映射关系可以看出, 主存块号的低\verb|c|位正是它要装入的\verb|Cache|行号, 若主存中用\verb|m|位表示块号, 则标记共\verb|m-c|位, \verb|Cache|块号共\verb|c|位, 相应的地址结构为:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.5]{img/figure15.pdf}
+\end{figure}\par
 
 
 
