@@ -286,32 +286,32 @@ L1:
 \item 直接寻址: 指令中的形式地址\verb|A|就是真实地址\verb|EA|, 即\verb|A|=\verb|EA|
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.6]{img/figure3.png}
+\includegraphics[scale=.9]{img/figure3.png}
 \end{figure}
 \item 间接寻址: 指令中的形式地址\verb|A|是真实地址的地址, 即\verb|(A)=EA|
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.6]{img/figure4.png}
+\includegraphics[scale=.9]{img/figure4.png}
 \end{figure}
 \item 寄存器寻址: 指令中的地址是寄存器号\verb|Ri|, 寄存器中存储了操作数, 即\verb|Ri=EA|
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.6]{img/figure5.png}
+\includegraphics[scale=.9]{img/figure5.png}
 \end{figure}
 \item 寄存器间接寻址: 指令中的地址是寄存器号\verb|Ri|, 寄存器中存储了真实地址\verb|EA|, 即\verb|(Ri)=EA|
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.6]{img/figure6.png}
+\includegraphics[scale=.9]{img/figure6.png}
 \end{figure}
 \item 相对寻址: 将程序计数器\verb|PC|的内容和指令中的形式地址\verb|A|相加得到真实地址\verb|EA|, 即\verb|(PC)+A=EA|
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.6]{img/figure7}
+\includegraphics[scale=.9]{img/figure7}
 \end{figure}
 \item 基址寻址: 将基址寄存器\verb|BR|的内容和指令中的形式地址\verb|A|相加得到真实地址\verb|EA|, 即\verb|(BR)+A=EA|
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.6]{img/figure8}
+\includegraphics[scale=.9]{img/figure8}
 \end{figure}
 \end{enumerate}
 \chapter{运算}
@@ -533,26 +533,38 @@ L1:
 \subsection{主存到\texttt{Cache}的映射}
 \verb|Cache|被分成与主存的页框大小一致的\verb|Cache|块(或称Cache行), 两者之间以块为单位进行数据交换. 下面解释了内存中的块应该放在\verb|Cache|中的哪个位置:
 \subsubsection{全相联映射}
-主存的块可以装入\verb|Cache|的任何位置, 没有公式. 相应的地址结构为:
+主存的块可以装入\verb|Cache|的任何块, 没有公式. 相应的地址结构为:
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.5]{img/figure13.pdf}
 \end{figure}
 \subsubsection{直接映射}
-主存中的块必须放入下面公式的指定位置:
+主存中的块必须放入下面公式的指定\verb|Cache|块:
 \begin{center}
 \verb|j = i mod 2^c|, 其中\verb|j|为\verb|Cache|块号, \verb|i|为主存块号, \verb|2^c|为\verb|Cache|的总块数
 \end{center} \par
-\par 从上面的映射关系可以看出, 主存块号的低\verb|c|位正是它要装入的\verb|Cache|行号, 若主存中用\verb|m|位表示块号, 则标记共\verb|m-c|位, \verb|Cache|块号共\verb|c|位, 相应的地址结构为:
+\par 从上面的映射关系可以看出, 主存块号的低\verb|c|位正是它要装入的\verb|Cache|行号. 若主存中用\verb|m|位表示块号, 则标记(有效位+内存地址高位)共\verb|m-c|位, \verb|Cache|块号共\verb|c|位, 相应的地址结构为:
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.5]{img/figure15.pdf}
 \end{figure}\par
-
-
-
-
-
+\subsubsection{组相联映射}
+将\verb|Cache|分成大小相等的组, 主存的一个数据块可以装入一组内的任意位置, 即组间采取直接映射, 组内采取全相联映射, 内存块可以放在下面公式指定的\verb|Cache|\textbf{组}中:
+\begin{center}
+\verb|j = i mod Q|, 其中\verb|j|为\verb|Cache|块号, \verb|i|为主存块号, \verb|Q|为组数
+\end{center}\par 
+与直接映射相似, 主存块号的低位用来表示组号, 内存块号的高位和有效位用来表示标记, 相应的地址结构为:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.5]{img/figure14.pdf}
+\end{figure}
+根据上述的地址结构, 我们应该可以推断出\verb|CPU|的访存过程:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.45]{img/figure16.png}
+\caption*{直接映射}
+\end{figure}\par
+上图为直接映射方式, 全相联映射中没有组,行号,内存地址高位低位的概念, 他的标记就是有效位+内存块号. 组相联映射是一种介于全相联映射和直接映射之间的一种映射.
 
 
 
