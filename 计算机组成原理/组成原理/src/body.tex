@@ -1,3 +1,43 @@
+\chapter{概要}
+\section{程序}
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.48\textwidth}
+\centering
+\includegraphics[scale=.6]{img/figure17.png}
+\caption{简化的硬软件层次结构}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+\centering
+\includegraphics[scale=.3]{img/figure18.pdf}
+\caption{从高级语言到机器语言}
+\end{subfigure}
+\end{figure}
+\begin{itemize}
+\item 应用软件 \par 用高级语言编写
+\item 系统软件
+\begin{itemize}
+\item 操作系统 \par 处理\verb|I/O|, 分配内存, 为应用程序提供服务
+\item 编译程序
+\end{itemize}
+\item 硬件 \par 处理器, 主存, 输入输出系统等
+\end{itemize}
+\section{硬件}
+计算机的核心硬件是\verb|CPU|(控制器和\verb|ALU|), 存储器(主存和外存), \verb|I/O|设备. 其中, 较受到关注的\verb|I/O|设备有:
+\begin{itemize}
+\item 鼠标
+\begin{itemize}
+\item 电动机械式: 一个球滚动
+\item 光电式: \verb|LED|光源, 每秒\verb|1500|次采样, 处理器进行照片对比
+\end{itemize}
+\item 显示器 \par 图像的像素矩阵用位图表示, 分辨率是\verb|x|, \verb|y|轴上点的个数. 彩色显示器每种颜色可以用\verb|8|位二进制数表示, 每像素\verb|RGB|三色, 故每像素用\verb|24|位表示. 图像保存在帧缓存中, 一幅图像为一帧
+\begin{itemize}
+\item 液晶显示器 \par 每个像素由一个三极管控制光线是否通过, 三个三极管控制颜色分配, 共四个三极管. 不施加电压是透光, 施加电压是不透光
+\end{itemize}
+\end{itemize}
+\section{性能和功耗}
+\section{性能测试方法}
+\section{Amdahl定律}
 \chapter{指令}
 \section{引言}
 \paragraph{指令集}~{一个给定的计算机体系结构所包含的指令集合} 
@@ -478,14 +518,17 @@ L1:
 \section{存储器的层次}
 \begin{figure}[H]
 \centering
-\begin{minipage}{.35\textwidth}
+\begin{subfigure}{.48\textwidth}
+\centering
 \includegraphics[scale=.3]{img/figure11.pdf}
-\end{minipage}
-\begin{minipage}{.48\textwidth}
+\caption{多级存储器结构}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+\centering
 \flushleft
 \includegraphics[scale=.3]{img/figure12.pdf}
-\end{minipage}
-\caption*{多级存储器结构}
+\caption{存储器之间的数据交换}
+\end{subfigure}
 \end{figure}
 这就是存储器的层次结构. 在\verb|pyramid|的越上层, 价格越高, 速度越快, 容量越小. 要注意的是, \verb|Cache|和主存之间的数据交换是由硬件完成的, 对所有程序员透明. 主存和辅存之间的数据交换是由硬件和操作系统共同完成的. 对应用程序员透明.
 \section{存储器的分类}
@@ -523,12 +566,6 @@ L1:
 \begin{itemize}
 \item 时间局部性: 现在访问的地址, 不久之后也很可能再次被访问
 \item 空间局部性: 现在访问的地址, 其附近的地址也很可能即将被访问
-\end{itemize}
-\subsection{性能分析}
-\verb|CPU|访问数据有两种方式: 先访问\verb|Cache|, 若未命中再访问主存或者是同时访问\verb|Cache|和主存, 若命中\verb|Cache|则停止访问主存, 这就引出了\verb|Cache|的性能衡量标准:
-\begin{itemize}
-\item 命中率 \par 设\verb|Cache|的总命中次数为\verb|a|, 访问主存的次数为\verb|b|, 则命中率\verb|=a/(a+b)|
-\item 缺失率 \par \verb|1-|命中率
 \end{itemize}
 \subsection{主存到\texttt{Cache}的映射}
 \verb|Cache|被分成与主存的页框大小一致的\verb|Cache|块(或称Cache行), 两者之间以块为单位进行数据交换. 下面解释了内存中的块应该放在\verb|Cache|中的哪个位置:
@@ -594,6 +631,46 @@ L1:
 新调入的块计数器\verb|=0|, 之后每一次被访问计数器\verb|+1|, 需要替换的时候, 选择计数器最小的一行(若相同, 选择行号更小的一行). \par
 最被经常访问的主存块在未来不一定会用得到, 并没有很好的遵循局部性原理, 实际效果不如\verb|LRU|.
 \subsection{\texttt{Cache}写策略}
-由于\verb|CPU|在访存的时候会优先访问\verb|Cache|, 所以\verb|Cache|中的数据被\verb|CPU|修改后, 怎么同步到内存, 就是\verb|Cache|写策略要解决的问题.
+由于\verb|CPU|在访存的时候会优先访问\verb|Cache|, 假设这次的命令是要到某个块里修改数据, 那么就有两种情况, 即``写命中''(要写的块在\verb|Cache|中)和``写不命中''(要写的块不在\verb|Cache|中), 他们均会造成内存和\verb|Cache|的数据不一致性, 下面的方法能解决这个问题:
+\begin{itemize}
+\item 写命中
+\begin{itemize}
+\item 写回法
+\item 全写法
+\end{itemize}
+\item 写不命中
+\begin{itemize}
+\item 写分配法
+\item 非写分配法
+\end{itemize}
+\end{itemize}
+\subsubsection{写回法}
+适用于写命中. 只修改\verb|Cache|中的内容, 而不立即写入主存, 只有在此块被换出的时候再写回主存. \par
+减少了访问次数, 但是存在数据不一致的隐患.
+\subsubsection{全写法(写直达法)}
+适用于写命中. 同时修改\verb|Cache|中的数据和主存中的内容, 一般使用写缓冲的方法, 创建一个队列, 慢慢地写回主存. \par 
+访存次数增加, 速度变慢, 但能保证数据的一致性. 如果使用写缓冲, 若写操作很频繁, 会导致写缓冲饱和而阻塞.
+\subsubsection{写分配法}
+适用于写不命中. 把主存中的块调入\verb|Cache|, 在\verb|Cache|中修改. 搭配写回法使用.
+\subsubsection{非写分配法}
+适用于写不命中. 只写入主存, 不调入\verb|Cache|. 搭配全写法使用.
+\subsection{多级\texttt{Cache}}
+各级\verb|Cache|之间使用的是``全写法+非写分配法'', \verb|Cache|-主存之间使用的是``写回法+写分配法''.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
