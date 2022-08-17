@@ -35,25 +35,98 @@
 \item 液晶显示器 \par 每个像素由一个三极管控制光线是否通过, 三个三极管控制颜色分配, 共四个三极管. 不施加电压是透光, 施加电压是不透光
 \end{itemize}
 \end{itemize}
-\section{性能和功耗}
+\section{性能}
+\begin{itemize}
+\item 机器字长 \par 计算机进行一次整数运算能处理的二进制位数, 通常和\verb|CPU|的寄存器位数/加法器有关.
+\item 数据通路带宽 \par 数据总线(非\verb|CPU|内部总线)一次能传递信息的位数.
+\item 主存容量
+\begin{itemize}
+\item \verb|MAR|: 主存地址, 反映存储单元的个数
+\item \verb|MDR|: 主存数据, 反映存储单元的位数
+\end{itemize}
+\item 运算速度
+\begin{itemize}
+\item 响应时间: 计算机完成某任务需要的总的时间
+\begin{itemize}
+\item \verb|CPU|执行时间
+\begin{itemize}
+\item 用户\verb|CPU|时间: 程序本身花费的时间, 体现\verb|CPU|性能(重点研究)
+\item 系统\verb|CPU|时间: 操作系统的时间, 体现系统性能
+\end{itemize}
+\item 等待\verb|I/O|等或多任务时其他程序运行的时间
+\end{itemize}
+\item 吞吐量 \par 单位时间那完成的任务量
+\item 时钟周期 \par 常数. 又称节拍. 时钟频率=1/时钟周期
+\item \verb|Average CPI(clock cycles per instruction)| \par 一个程序或者程序片段的全部指令所有时钟周期数的平均值.
+\end{itemize}
+\end{itemize} \par
+看了上面一些性能衡量的指标, 所以\textbf{到底}我们应该怎么衡量性能呢?--下面的公式: \par 
+\begin{center}
+\verb|Average CPI = CPU时钟周期数 / 指令数|\\
+\verb|一个程序的CPU执行时间 = 指令数 * Average CPI * 时钟周期|\\
+\verb|性能 = 1 / 一个程序的CPU执行时间|
+\end{center}
+\section{功耗}
+\verb|CMOS|集成电路的动态功耗计算:
+\begin{center}
+\verb|动态功耗 = 负载电容 * 电压^2 * 开关频率|
+\end{center}\par
+从上面的公式看出, 我们可以通过下降电压来降低功耗, 但是降低电压会导致``漏电''现象. 同时, 电压过高会导致散热问题难以解决. 所以, 我们采用了一种方法: 多核处理器.
 \section{性能测试方法}
-\section{Amdahl定律}
+\begin{itemize}
+\item \verb|SPEC CPU|基准测试程序 \par
+\verb|SPEC(System Performance Evaluation Coorperative)| 为\verb|CPU, I/O, Web,...|等开发了若干用于测试性能的程序, 我们只要选择一种处理器作为基准处理器, 按照下面的公式即可测试性能:
+\begin{center}
+\verb|SPECratio = 参考处理器执行时间 / 被测计算机执行时间|\\
+\verb|性能测试结果 = SPECratio的几何平均值|
+\end{center}
+\item 功耗基准测试程序 \par
+性能用吞吐率\verb|ssj_ops|表示, 即每秒钟的操作次数. 现在, 我们将负载设为\verb|0|, 同时记录\verb|ssj_ops|, 将负载提高\verb|10%|, 记录\verb|ssj_ops|, 再将负载提高\verb|10%|, 再记录\verb|ssj_ops|,...如此循环往复, 直到满负载. 得到的结果用以下公式计算:
+\begin{center}
+\verb||
+\end{center}
+\begin{equation*}
+\symtt{\text{\texttt{功耗测试结果}} = \frac{\sum_{i=0}^{10}ssj\_ops_{i}}{\sum_{i=1}^{10}power_{i}}}
+\end{equation*}
+\end{itemize}
+\section{\texttt{Amdahl}定律}
+首先, 要解释以下几个变量的含义:
+\begin{itemize}
+\item \verb|T_0|: 改进前的总执行时间
+\item \verb|T_improved|: 改进后的总执行时间
+\item \verb|T_affected|: 受改进影响的执行时间
+\item \verb|T_unaffected|: 未受改进影响的执行时间
+\end{itemize}\par
+根据上面的几个变量, 衍生出了下面的几个变量:
+\begin{itemize}
+\item 可改进比\verb|Fe| \par \verb|Fe = T_affected / T_0|
+\item 加速比\verb|Sn| \par \verb|T_0 / T_improved|
+\item 部件加速比\verb|Se|(改进量) \par \verb|T_affected / (T_improved - T_unaffected)|
+\end{itemize}\par
+下面就是著名的\verb|Amdahl|定律:
+\begin{center}
+\verb|T_improved = T_affected / Se + T_unaffected|
+\end{center}\par
+当然, 这个公式还有其他改进:\vspace{1em}
+\begin{equation*}
+\symtt{\frac{1}{\sum_{i=1}^{m}\frac{Fe_{i}}{Se_{i}}+(1-\sum_{i=1}^{m}Fe_{i})}}, \text{\texttt{其中i表示部件的数量}}
+\end{equation*}
 \chapter{指令}
 \section{引言}
 \paragraph{指令集}~{一个给定的计算机体系结构所包含的指令集合} 
 \paragraph{汇编语言和机器语言}~{前者是编程的书写形式, 后者是计算机所能识别的形式} 
 \paragraph{存储程序}~{多种类型的指令和数据均以数字形式存储在存储器(内存)中}
-\paragraph{MIPS}~{是一种汇编语言, 属于精简指令集}
+\paragraph{\texttt{MIPS}}~{是一种汇编语言, 属于精简指令集}
 \section{硬件操作}
-\subsection{MIPS汇编指令}
+\subsection{\texttt{MIPS}汇编指令}
 \begin{itemize}
-\item 每条MIPS算数运算指令只执行一个操作
+\item 每条\texttt{MIPS}算数运算指令只执行一个操作
 \item 一行写一条命令
 \item \#后是注释
 \end{itemize}
 \subsection{高级语言与编译语言之间的关系}
 高级语言经过编译器编译, 形成汇编语言.
-\section{MIPS寄存器及常用指令}
+\section{\texttt{MIPS}寄存器及常用指令}
 高级语言的变量数量不受限制, 而汇编语言逻辑运算指令的变量对应寄存器, 而寄存器数量有限, 故变量数量受限.
 \subsection{寄存器}
 \begin{itemize}
@@ -94,9 +167,9 @@
 \item \verb|add rd, rs, $ZERO|: 将\verb|rs|赋值给\verb|rd|
 \item \verb|addi rt, rs, 0|: 将\verb|rs|赋值给\verb|rt|
 \end{itemize}
-\section{MIPS指令格式}
+\section{\texttt{MIPS}指令格式}
 指令包含操作码和地址码.
-\subsection{R型指令}
+\subsection{\texttt{R}型指令}
 \begin{table}[H]
 \centering
 \begin{tabularx}{\textwidth}{|Z|Z|Z|Z|Z|Z|}
@@ -118,11 +191,11 @@ op & rs & rt & rd & shamt & funct  \\
 \begin{itemize}
 \item \verb|op|: \verb|6|位, 因为有\verb|64|种指令
 \item \verb|rs,rt,rd|: \verb|5|位, 因为有\verb|32|个寄存器
-\item \verb|shamt|: \verb|5|位, 因为MIPS是\verb|32|位指令
+\item \verb|shamt|: \verb|5|位, 因为\texttt{MIPS}是\verb|32|位指令
 \item \verb|funct|: \verb|6|位, 因为\verb|32-6-5-5-5-5=6|
 \end{itemize}\par
 上述操作码可以查询表格, 寄存器号需要记忆, 下面也一样.
-\subsection{I型指令}
+\subsection{\texttt{I}型指令}
 \begin{table}[H]
 \centering
 \begin{tabularx}{\textwidth}{|Z|Z|Z|p{15em}<{\centering}|}
@@ -144,7 +217,7 @@ op & rs & rt & constant or address \\
 \item \verb|rs,rt|: \verb|5|位, 因为有\verb|32|个寄存器
 \item \verb|constant or address|: \verb|16|位, 因为\verb|32-6-5-5=16|
 \end{itemize}
-\subsection{J型指令}
+\subsection{\texttt{J}型指令}
 \begin{table}[H]
 \centering
 \begin{tabularx}{\textwidth}{|Z|Z|}
@@ -163,22 +236,22 @@ op & address \\
 \item \verb|op|: \verb|6|位, 因为有\verb|64|种指令
 \item \verb|address|: \verb|26|位, 因为\verb|32-6=26|
 \end{itemize}
-\section{MIPS逻辑操作}
+\section{\texttt{MIPS}逻辑操作}
 \subsection{指令}
 逻辑移动指令:
 \begin{itemize}
 \item \verb|sll rd, rt, shamt|: 逻辑左移指令, \verb|rt|中的数左移\verb|shamt|位, 空出的位补\verb|0|, 结果存\verb|rd|
 \item \verb|srl rd, rt, shamt|: 逻辑右移指令, \verb|rt|中的数右移\verb|shamt|位, 空出的位补\verb|0|, 结果存\verb|rd|
 \end{itemize}\par
-上述指令为R型指令, 其中\verb|op|都为\verb|0|, \verb|func|分别为\verb|0|和\verb|6|, \verb|shamt|为位移量, \verb|rs|不使用为0. \par
+上述指令为\verb|R|型指令, 其中\verb|op|都为\verb|0|, \verb|func|分别为\verb|0|和\verb|6|, \verb|shamt|为位移量, \verb|rs|不使用为0. \par
 逻辑运算指令:
 \begin{itemize}
 \item \verb|add rd, rs, rt|: 逻辑与指令, \verb|rs|和\verb|rt|按位与, 结果存\verb|rd|
 \item \verb|or rd, rs, rt|: 逻辑或指令, \verb|rs|和\verb|rt|按位或, 结果存\verb|rd|
 \item \verb|nor rd, rs, rt|: 逻辑或非指令, \verb|rs|和\verb|rt|按位或非, 结果存\verb|rd|
 \end{itemize}\par
-上述指令为R型指令, \verb|op|都为\verb|0|, \verb|func|分别为\verb|20|,\verb|25|,\verb|27|, \verb|shamt|全为\verb|0|.
-\section{MIPS决策指令}
+上述指令为\verb|R|型指令, \verb|op|都为\verb|0|, \verb|func|分别为\verb|20|,\verb|25|,\verb|27|, \verb|shamt|全为\verb|0|.
+\section{\texttt{MIPS}决策指令}
 \subsection{指令}
 \verb|bne|和\verb|beq|指令:
 \begin{itemize}
@@ -186,20 +259,20 @@ op & address \\
 \item \verb|bne rs, rt, L1|: 如果\verb|rs!=rt|跳转到标签为\verb|L1|的指令
 \item \verb|j L1|: 无条件转移到标签为\verb|L1|的指令
 \end{itemize}\par
-前两条为I型指令, \verb|op|分别为\verb|4|,\verb|5|,\verb|2|. 最后一条指令为J型指令.\par
+前两条为\verb|I|型指令, \verb|op|分别为\verb|4|,\verb|5|,\verb|2|. 最后一条指令为\verb|J|型指令.\par
 \verb|slt|和\verb|slti|指令:
 \begin{itemize}
 \item \verb|slt $rd, $rs, $rt|: 若\verb|rs<rt|, 则\verb|rd=1|, 否则\verb|rd=0|
 \item \verb|slti $rt, $rs, constant|: 若\verb|rs<constant|, 则\verb|rd=1|, 否则\verb|rd=0|
 \end{itemize}
-\subsection{条件分支代码转MIPS}
+\subsection{条件分支代码转\texttt{MIPS}}
 将以下代码:
 \begin{lstlisting}
 # f,g,h,i,j存储于$s0,$s1,$s2,$s3,$s4
 if (i == j) f = g + h;
 else f = g - h;
 \end{lstlisting}\par
-转换为MIPS:
+转换为\texttt{MIPS}:
 \begin{lstlisting}
        bne $s3, $s4 ELSE
        add $s0, $s1, $s2
@@ -207,12 +280,12 @@ else f = g - h;
 ELSE: $s0, $s1, $s2
 EXIT: ...
 \end{lstlisting}
-\subsection{循环代码转MIPS}
+\subsection{循环代码转\texttt{MIPS}}
 将以下代码:
 \begin{lstlisting}
 while (save[i] == k) i += 1; # i存于$s3, k存于$s5, save的基址存于$s6
 \end{lstlisting}\par
-转为MIPS:
+转为\texttt{MIPS}:
 \begin{lstlisting}
 LOOP: sll $t0, $s3, 2 # $t0 = i * 4, 找到地址
        add $t0, $s6, $t0 # $t0 = 基址 + 偏移量
@@ -222,7 +295,7 @@ LOOP: sll $t0, $s3, 2 # $t0 = i * 4, 找到地址
        j LOOP # 实现循环
 EXIT: ...
 \end{lstlisting}
-\section{MIPS函数}
+\section{\texttt{MIPS}函数}
 \subsection{指令}
 \begin{itemize}
 \item \verb|jal Address|: 跳转到函数地址, 并将\verb|PC+4|存储于\verb|$ra|以便返回断点处
@@ -237,7 +310,7 @@ EXIT: ...
 \item 入栈(\verb|push|): \verb|$sp=$sp-4|
 \item 出栈(\verb|pop|): \verb|$sp=$sp+4|
 \end{enumerate}
-\subsection{函数代码转MIPS}
+\subsection{函数代码转\texttt{MIPS}}
 将以下代码:
 \begin{lstlisting}
 int leaf_example (int g, h, i, j)
@@ -247,7 +320,7 @@ int leaf_example (int g, h, i, j)
     return f;
 }
 \end{lstlisting}\par
-转换为MIPS:
+转换为\texttt{MIPS}:
 \begin{lstlisting}
 # 入栈
 addi $sp, $sp, -12
@@ -267,12 +340,12 @@ addi $sp, $sp, 12
 # 返回
 jr $ra
 \end{lstlisting}
-\section{MIPS嵌套}
+\section{\texttt{MIPS}嵌套}
 不调用其他过程的过程称为\textbf{叶过程}, 嵌套调用就是过程体中调用其他的过程(甚至包括自己) \par
 首先要知道, 递归分为两个阶段: 递归阶段和返回阶段. \par
 假设主程序将参数\verb|3|传入寄存器\verb|$a0|, 然后使用\verb|jal A|调用过程\verb|A|. 再假设过程\verb|A|通过\verb|jal B|调用过程\verb|B|, 参数为\verb|7|, 同样存入\verb|$a0|. 由于\verb|A|尚未完成任务, 所以寄存器\verb|$a0|的使用上存在冲突. 同样, 在寄存器\verb|$ra|保存的返回地址上也存在冲突, 因为它现在保存的是\verb|B|的返回地址. 所以我们必须采用压栈的方式对数据进行保存: \par
-Caller把所有在返回阶段需要用到的参数寄存器(\verb|$a0-$a3|)或临时寄存器\verb|$t0-$t9|压栈. Callee把将所有在返回阶段要用到的返回地址寄存器\verb|$ra|和保存寄存器\verb|$s0-$s7|都压栈. 栈指针\verb|$sp|会随诊栈中寄存器的个数调整. 到返回的时候, 寄存器就会从存储器中恢复, 栈指针也会重新调整.
-\subsection{递归代码转MIPS}
+\texttt{Caller}把所有在返回阶段需要用到的参数寄存器(\verb|$a0-$a3|)或临时寄存器\verb|$t0-$t9|压栈. \verb|Callee|把将所有在返回阶段要用到的返回地址寄存器\verb|$ra|和保存寄存器\verb|$s0-$s7|都压栈. 栈指针\verb|$sp|会随诊栈中寄存器的个数调整. 到返回的时候, 寄存器就会从存储器中恢复, 栈指针也会重新调整.
+\subsection{递归代码转\texttt{MIPS}}
 将以下代码:
 \begin{lstlisting}
 int fact(int n)
@@ -281,7 +354,7 @@ int fact(int n)
         else return (n * fact(n - 1));
 }
 \end{lstlisting}\par
-转换为MIPS:
+转换为\texttt{MIPS}:
 \begin{lstlisting}
 fact:
       addi $sp, $sp, -8
@@ -578,7 +651,7 @@ L1:
 \subsubsection{直接映射}
 主存中的块必须放入下面公式的指定\verb|Cache|块:
 \begin{center}
-\verb|j = i mod 2^c|, 其中\verb|j|为\verb|Cache|块号, \verb|i|为主存块号, \verb|2^c|为\verb|Cache|的总块数
+\verb|j = i mod 2^c, 其中j为Cache块号, i为主存块号, 2^c为Cache的总块数|
 \end{center} \par
 \par 从上面的映射关系可以看出, 主存块号的低\verb|c|位正是它要装入的\verb|Cache|行号. 若主存中用\verb|m|位表示块号, 则标记(有效位+内存地址高位)共\verb|m-c|位, \verb|Cache|块号共\verb|c|位, 相应的地址结构为:
 \begin{figure}[H]
@@ -588,7 +661,7 @@ L1:
 \subsubsection{组相联映射}
 将\verb|Cache|分成大小相等的组, 主存的一个数据块可以装入一组内的任意位置, 即组间采取直接映射, 组内采取全相联映射, 内存块可以放在下面公式指定的\verb|Cache|\textbf{组}中:
 \begin{center}
-\verb|j = i mod Q|, 其中\verb|j|为\verb|Cache|块号, \verb|i|为主存块号, \verb|Q|为组数
+\verb|j = i mod Q, 其中j为Cache块号, i为主存块号, Q为组数|
 \end{center}\par 
 与直接映射相似, 主存块号的低位用来表示组号, 内存块号的高位和有效位用来表示标记, 相应的地址结构为:
 \begin{figure}[H]
