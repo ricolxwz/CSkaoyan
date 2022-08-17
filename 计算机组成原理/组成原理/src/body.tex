@@ -565,10 +565,30 @@ L1:
 \caption*{直接映射}
 \end{figure}\par
 上图为直接映射方式, 全相联映射中没有组,行号,内存地址高位低位的概念, 他的标记就是有效位+内存块号. 组相联映射是一种介于全相联映射和直接映射之间的一种映射.
-
-
-
-
+\subsection{替换算法}
+由于\verb|Cache|的空间通常很小, 所以用不到的\verb|Cache|块就要及时换出, 下面说明上述三种映射中替换算法要解决的问题:
+\begin{itemize}
+\item 全相联映射 \par \verb|Cache|满了才需要替换, 需要在全局选择替换哪一块
+\item 直接映射 \par 如果对应位置非空, 则毫无选择地直接替换, 无需考虑替换算法
+\item 组相联映射 \par 分组内满了才需要替换, 需要在分组内选择替换哪一块
+\end{itemize}
+\subsubsection{随机算法(\texttt{RAND})}
+若\verb|Cache|已满, 则随机选择一块替换. \par
+实现简单, 但是完全没有考虑局部性原理. 命中率低, 实际效果很不稳定.
+\subsubsection{先进先出算法(\texttt{FIFO})}
+若\verb|Cache|已满, 则替换最先被调入\verb|Cache|的块. \par
+实现简单, 也是完全没有考虑局部性原理, 会出现抖动现象: 频繁的换入换出现象
+\subsubsection{近期最少使用算法(\texttt{LRU})}
+为每个\verb|Cache|设置一个``计数器'', 用于记录每个\verb|Cache|块已经多久没有被访问了, 当\verb|Cache|满后替换``计数器''最大的. \par
+\begin{equation*}
+y=|x|=
+\scaleleftright[6pt]{\biggl\{}{
+\begin{aligned}
+& x,\ x\ge 0 \\
+& -x,\ x<0
+\end{aligned}
+}{.}
+\end{equation*}
 
 
 
