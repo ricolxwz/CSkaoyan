@@ -580,16 +580,20 @@ L1:
 实现简单, 也是完全没有考虑局部性原理, 会出现抖动现象: 频繁的换入换出现象
 \subsubsection{近期最少使用算法(\texttt{LRU})}
 为每个\verb|Cache|设置一个``计数器'', 用于记录每个\verb|Cache|块已经多久没有被访问了, 当\verb|Cache|满后替换``计数器''最大的. \par
-\begin{equation*}
-y=|x|=
-\scaleleftright[6pt]{\biggl\{}{
-\begin{aligned}
-& x,\ x\ge 0 \\
-& -x,\ x<0
-\end{aligned}
-}{.}
-\end{equation*}
-
-
+\begin{enumerate}
+\item 命中 \par 命中行计数器清零, 比其低的计数器加\verb|1|, 其余不变
+\item 未命中
+\begin{enumerate}
+\item 有空闲行 \par 空闲行计数器清零, 其余非空闲行加\verb|1|
+\item 无空闲行 \par 计数器值最大行的信息块被淘汰, 新装行的块的计数器清零, 其余全加\verb|1|
+\end{enumerate}
+\end{enumerate}\par
+该算法基于局部性原理, 运行效果优秀, \verb|Cache|命中率高.
+\subsubsection{最不经常使用算法\texttt{LFU}}
+为每个\verb|Cache|设置一个``计数器'', 用于记录每个\verb|Cache|块被访问过几次, 当\verb|Cache|满后替换``计数器''最小的. \par
+新调入的块计数器\verb|=0|, 之后每一次被访问计数器\verb|+1|, 需要替换的时候, 选择计数器最小的一行(若相同, 选择行号更小的一行). \par
+最被经常访问的主存块在未来不一定会用得到, 并没有很好的遵循局部性原理, 实际效果不如\verb|LRU|.
+\subsection{\texttt{Cache}写策略}
+由于\verb|CPU|在访存的时候会优先访问\verb|Cache|, 所以\verb|Cache|中的数据被\verb|CPU|修改后, 怎么同步到内存, 就是\verb|Cache|写策略要解决的问题.
 
 
