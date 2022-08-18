@@ -109,7 +109,7 @@
 \end{center}\par
 当然, 这个公式还有其他改进:\vspace{1em}
 \begin{equation*}
-\symtt{\frac{1}{\sum_{i=1}^{m}\frac{Fe_{i}}{Se_{i}}+(1-\sum_{i=1}^{m}Fe_{i})}}, \text{\texttt{其中i表示部件的数量}}
+\symtt{\frac{1}{\sum_{i=1}^{m}\frac{Fe_{i}}{Se_{i}}+(1-\sum_{i=1}^{m}Fe_{i})}}, \text{\texttt{其中i表示改进的部件的数量}}
 \end{equation*}
 \chapter{指令}
 \section{引言}
@@ -729,8 +729,62 @@ L1:
 适用于写不命中. 只写入主存, 不调入\verb|Cache|. 搭配全写法使用.
 \subsection{多级\texttt{Cache}}
 各级\verb|Cache|之间使用的是``全写法+非写分配法'', \verb|Cache|-主存之间使用的是``写回法+写分配法''.
-
-
+\chapter{处理器}
+\section{处理器的结构}
+\verb|CPU|由控制器和运算器组成:
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.48\textwidth}
+\centering
+\includegraphics[scale=.5]{img/figure19.pdf}
+\caption{运算器}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+\centering
+\includegraphics[scale=.5]{img/figure20.pdf}
+\caption{控制器}
+\end{subfigure}
+\end{figure}
+\subsection{控制器}
+控制器内有三个重要的部件:
+\begin{itemize}
+\item \verb|CU|: \verb|Control Unit|, 分析指令, 给出控制信号
+\item \verb|IR|: \verb|Instruction Registor|, 存放当前指令
+\item \verb|PC|: \verb|Program Counter|, 存放下一条指令的地址, 有自动加\verb|1|的功能
+\end{itemize}\par
+那么, 控制器能实现什么功能呢?
+\begin{itemize}
+\item 取指令
+\item 分析指令
+\item 执行指令, 发出各种操作命令
+\item 控制程序输入及结果的输出
+\item 总线管理
+\item 处理异常情况和特殊请求
+\end{itemize}
+\subsection{运算器}
+运算器内有四个重要的部件:
+\begin{itemize}
+\item \verb|ACC|: 累加器, 用于存放被操作数, 或者运算结果
+\item \verb|MQ|: 乘商寄存器, 在乘, 除运算的时候, 用于存放操作数或者运算结果
+\item \verb|X|: 通用的操作数寄存器, 用于存放操作数
+\item \verb|ALU|: 算术逻辑单元, 通过内部复杂的电路实现算术运算, 逻辑运算
+\end{itemize}
+运算器的功能, 顾名思义, 实现算术和逻辑运算.
+\section{指令周期}
+\verb|CPU|从主存中取出并执行一条指令的时间称为指令周期. 不同指令的指令周期可能不同. 指令周期用若干的机器周期表示, 一个机器周期又包含若干时钟周期(节拍).\par 根据机器周期内的节拍数是否相等, 可以拆分为:
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.48\textwidth}
+\centering
+\includegraphics[scale=.4]{img/figure21.pdf}
+\caption{定长机器周期}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+\centering
+\includegraphics[scale=.4]{img/figure22.pdf}
+\caption{不定长机器周期}
+\end{subfigure}
+\end{figure}
 
 
 
