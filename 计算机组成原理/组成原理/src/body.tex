@@ -785,6 +785,28 @@ L1:
 \caption{不定长机器周期}
 \end{subfigure}
 \end{figure}
+对于无条件转移指令\verb|j|, 在取值令完成后无需访存, 所以只包含取值周期和执行周期(都属于机器周期). \par
+对于间接寻址指令, 在取指令完成后仍需访存, 因为取指令阶段取的是指令, 要根据这个指令访存取出有效地址, 所以还包括间址周期. \par
+\verb|CPU|在每条指令结束之前, 都要发中断查询信号, 若有中断请求, 则\verb|CPU|进入中断响应阶段, 所以还包括中断周期. \par
+综上所述, 一个一般的指令为:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.6]{img/figure23.pdf}
+\end{figure}
+四个周期的工作:
+\begin{itemize}
+\item 取指周期: 取出并分析指令
+\item 间址周期: 取有效地址
+\item 执行周期: 取操作数, 并执行指令
+\item 中断周期: 保存程序断点
+\end{itemize}
+\section{\texttt{MIPS}指令体系}
+\subsection{组合逻辑\texttt{CPU}基本构成}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.6]{img/figure24.png}
+\end{figure}
+
 
 
 
