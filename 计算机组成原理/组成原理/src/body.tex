@@ -796,15 +796,78 @@ L1:
 \item 中断周期: 保存程序断点
 \end{itemize}
 \section{\texttt{MIPS}指令体系}
-\subsection{组合逻辑\texttt{CPU}基本构成}
+\subsection{组合逻辑\texttt{CPU}基础}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.3]{img/figure24.pdf}
 \end{figure}
+\subsubsection{\texttt{lw}操作}
+我们以\verb|lw $t0, 32($s3)|为例, 首先, 将上述指令转化为十进制的样式:
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|Z|Z|Z|Z|}
+\hline
+\verb|35(op)| & \verb|19(rs)| & \verb|8(rt)| & \verb|32(Address)| \\
+\hline
+\end{tabularx}
+\end{table}
+然后, 将数据流在电路图中表示:
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.25]{img/figure25.pdf}
+\includegraphics[scale=.3]{img/figure26.pdf}
 \end{figure}
+\subsubsection{\texttt{sw}操作}
+我们以\verb|sw $t0, 32($s3)|为例, 首先, 将上述指令转化为十进制的样式:
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|Z|Z|Z|Z|}
+\hline
+\verb|43(op)| & \verb|19(rs)| & \verb|8(rt)| & \verb|32(Address)| \\
+\hline
+\end{tabularx}
+\end{table}
+然后, 将数据流在电路图中表示:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.3]{img/figure27.pdf}
+\end{figure}
+\subsubsection{\texttt{add}操作}
+我们以\verb|add $t0, $s1, $s2|为例, 首先, 将上述指令转化为十进制的样式:
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|Z|Z|Z|Z|Z|Z|}
+\hline
+\verb|0(op)| & \verb|17(rs)| & \verb|18(rt)| & \verb|8(rd)| & \verb|0(shamt)| & \verb|32(funct)| \\
+\hline
+\end{tabularx}
+\end{table}
+然后, 将数据流在电路图中表示:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.3]{img/figure28.pdf}
+\end{figure}
+\subsubsection{\texttt{beq}操作}
+我们以\verb|beq $s3, $t0, label|为例, 首先, 将上述指令转化为十进制的样式:
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|Z|Z|Z|Z|}
+\hline
+\verb|4(op)| & \verb|19(rs)| & \verb|8(rt)| & \verb|label(offset)| \\
+\hline
+\end{tabularx}
+\end{table}
+然后, 将数据流在电路图中表示:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.3]{img/figure29.pdf}
+\end{figure}
+\subsubsection{\texttt{j}操作}
+我们以\verb|j Addr|为例, 在电路图中表示为:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.3]{img/figure30.pdf}
+\end{figure}
+
 
 
 
