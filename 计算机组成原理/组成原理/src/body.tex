@@ -796,12 +796,14 @@ L1:
 \item 中断周期: 保存程序断点
 \end{itemize}
 \section{\texttt{MIPS}指令体系}
-\subsection{组合逻辑\texttt{CPU}基础}
+\subsection{组合逻辑\texttt{CPU}基本构成}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.3]{img/figure24.pdf}
 \end{figure}
-\subsubsection{\texttt{lw}操作}
+\subsubsection{\texttt{MIPS}指令的简单实现}
+\begin{enumerate}
+\item \texttt{lw}操作 \par
 我们以\verb|lw $t0, 32($s3)|为例, 首先, 将上述指令转化为十进制的样式:
 \begin{table}[H]
 \centering
@@ -816,7 +818,8 @@ L1:
 \centering
 \includegraphics[scale=.3]{img/figure26.pdf}
 \end{figure}
-\subsubsection{\texttt{sw}操作}
+上图表示\verb|lw $t0, 32($s3)|指令执行的\textcolor{myred}{源数据流向}, \textcolor{mygreen}{结果流向}, \textcolor{myyellow}{\texttt{PC}改变}.
+\item \texttt{sw}操作 \par
 我们以\verb|sw $t0, 32($s3)|为例, 首先, 将上述指令转化为十进制的样式:
 \begin{table}[H]
 \centering
@@ -831,7 +834,8 @@ L1:
 \centering
 \includegraphics[scale=.3]{img/figure27.pdf}
 \end{figure}
-\subsubsection{\texttt{add}操作}
+上图表示\verb|sw $t0, 32($s3)|指令执行的\textcolor{myred}{源数据流向}, \textcolor{mygreen}{结果流向}, \textcolor{myyellow}{\texttt{PC}改变}.
+\texttt{add}操作 \par
 我们以\verb|add $t0, $s1, $s2|为例, 首先, 将上述指令转化为十进制的样式:
 \begin{table}[H]
 \centering
@@ -846,7 +850,8 @@ L1:
 \centering
 \includegraphics[scale=.3]{img/figure28.pdf}
 \end{figure}
-\subsubsection{\texttt{beq}操作}
+上图表示\verb|add $t0, $s1, $s2|指令执行的\textcolor{myred}{源数据流向}, \textcolor{mygreen}{结果流向}, \textcolor{myyellow}{\texttt{PC}改变}.
+\texttt{beq}操作 \par
 我们以\verb|beq $s3, $t0, label|为例, 首先, 将上述指令转化为十进制的样式:
 \begin{table}[H]
 \centering
@@ -861,12 +866,48 @@ L1:
 \centering
 \includegraphics[scale=.3]{img/figure29.pdf}
 \end{figure}
-\subsubsection{\texttt{j}操作}
+上图表示\verb|beq $s3, $t0, label|指令执行的\textcolor{myred}{源数据流向}, \textcolor{myyellow}{\texttt{PC}改变}.
+\texttt{j}操作 \par
 我们以\verb|j Addr|为例, 在电路图中表示为:
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.3]{img/figure30.pdf}
 \end{figure}
+上图表示\verb|j Addr|指令执行的\textcolor{myyellow}{\texttt{PC}改变}.
+\end{enumerate}
+\subsubsection{增加选择器和控制器}
+观察上面的电路图我们会发现, 有很多分支电路
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.3]{img/figure31.pdf}
+\end{figure}
+所以数据到底应该走哪一条呢? 我们需要添加选择器和控制器以选择数据:
+\begin{itemize}
+\item \verb|1|号选择器+控制器
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.2]{img/figure32.pdf}
+\end{figure}
+该选择器的作用是选择\verb|PC+4|还是\verb|PC+4+Offset*4|, 条件由控制器控制, 若指令译码结果\verb|op|为\verb|beq|指令, 则\verb|ALU|如果相减为\verb|0|则否, 选择器选择\verb|PC=PC+4+Offset*4|.
+\item \verb|2|号选择器+控制器
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.2]{img/figure33.pdf}
+\end{figure}
+该选择器的作用是选择\verb|lw|还是逻辑运算指令\verb|add,sub...|, 前者存入寄存器的是从主存中读出的数据, 而后者是\verb|ALU|计算的数据或者是寄存器置\verb|0|/\verb|1|.
+\item \verb|3|号选择器+控制器
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.2]{img/figure34.pdf}
+\end{figure}
+该选择器的作用是选择\verb|lw, sw|指令的\verb|Offset|, 还是算数逻辑命令指明的寄存器的值.
+\item 其余控制器
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.2]{img/figure35.pdf}
+\end{figure}
+用于控制寄存器, 存储器的读写, \verb|ALU|进行何种运算.
+\end{itemize}
 
 
 
