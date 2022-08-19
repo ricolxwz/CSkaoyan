@@ -4,7 +4,7 @@
 \centering
 \begin{subfigure}{.48\textwidth}
 \centering
-\includegraphics[scale=.6]{img/figure17.png}
+\includegraphics[scale=.2]{img/figure17.pdf}
 \caption{简化的硬软件层次结构}
 \end{subfigure}
 \begin{subfigure}{.48\textwidth}
@@ -387,44 +387,39 @@ L1:
       # 释放栈
       # 根据刚取出的$a0和$v0相乘
       # 函数返回
-\end{lstlisting}\par 
-过程示意图:
-\begin{figure}[H]
-\centering
-\includegraphics[scale=.5]{img/figure2.png}
-\end{figure}
+\end{lstlisting}
 \section{寻址方式}
 寻址方式就是根据地址找到指令或者操作数的方法. \par 假设有数据存储在地址为\verb|EA|的内存中, 用\verb|()|表示内存的内容:
 \begin{enumerate}
 \item 直接寻址: 指令中的形式地址\verb|A|就是真实地址\verb|EA|, 即\verb|A|=\verb|EA|
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.9]{img/figure3.png}
+\includegraphics[scale=.4]{img/figure3.pdf}
 \end{figure}
 \item 间接寻址: 指令中的形式地址\verb|A|是真实地址的地址, 即\verb|(A)=EA|
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.9]{img/figure4.png}
+\includegraphics[scale=.4]{img/figure4.pdf}
 \end{figure}
 \item 寄存器寻址: 指令中的地址是寄存器号\verb|Ri|, 寄存器中存储了操作数, 即\verb|Ri=EA|
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.9]{img/figure5.png}
+\includegraphics[scale=.4]{img/figure5.pdf}
 \end{figure}
 \item 寄存器间接寻址: 指令中的地址是寄存器号\verb|Ri|, 寄存器中存储了真实地址\verb|EA|, 即\verb|(Ri)=EA|
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.9]{img/figure6.png}
+\includegraphics[scale=.4]{img/figure6.pdf}
 \end{figure}
 \item 相对寻址: 将程序计数器\verb|PC|的内容和指令中的形式地址\verb|A|相加得到真实地址\verb|EA|, 即\verb|(PC)+A=EA|
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.9]{img/figure7}
+\includegraphics[scale=.4]{img/figure7}
 \end{figure}
 \item 基址寻址: 将基址寄存器\verb|BR|的内容和指令中的形式地址\verb|A|相加得到真实地址\verb|EA|, 即\verb|(BR)+A=EA|
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.9]{img/figure8}
+\includegraphics[scale=.4]{img/figure8}
 \end{figure}
 \end{enumerate}
 \chapter{运算}
@@ -671,7 +666,7 @@ L1:
 根据上述的地址结构, 我们应该可以推断出\verb|CPU|的访存过程:
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.45]{img/figure16.png}
+\includegraphics[scale=.4]{img/figure16.pdf}
 \caption*{直接映射}
 \end{figure}\par
 上图为直接映射方式, 全相联映射中没有组,行号,内存地址高位低位的概念, 他的标记就是有效位+内存块号. 组相联映射是一种介于全相联映射和直接映射之间的一种映射.
