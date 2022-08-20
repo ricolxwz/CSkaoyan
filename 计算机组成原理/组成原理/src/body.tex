@@ -954,7 +954,7 @@ lw & 200ps & 100ps & 200ps & 200ps & 100ps \\
 \caption{流水线}
 \end{subfigure}
 \end{figure}
-假设对寄存器的读操作发生在时钟周期的后半部分, 写操作发生在前半部分. 可以看到, 流水线的时钟周期受限于最慢的处理步骤, 时间为\verb|200ps|, 所以所有的流水级(\verb|Stage|)都是\verb|200ps|. 而单周期的每一个指令都是\verb|800ps|.\par 
+假设对寄存器的读操作发生在时钟周期的后半部分, 写操作发生在前半部分. 可以看到, 流水线的时钟周期受限于最慢的处理步骤, 时间为\verb|200ps|, 所以所有的流水级(\verb|Stage|)都是\verb|200ps|. 而单周期的每一个指令都是\verb|800ps|.\par
 加速比\verb|=3*800/(800+3*200)|$ \symtt{\approx} $\verb|1.7|, 如果指令数量足够多的化, 如再增加\verb|1000000|条, 则加速比\verb|=1000000*|\\\verb|800/(800+1000000*200)|$ \symtt{\approx} $\verb|4|. 没有达到\verb|5|, 理想情况下可以达到.\par 
 \paragraph{总结}~{} 
 \begin{itemize}
@@ -964,7 +964,7 @@ lw & 200ps & 100ps & 200ps & 200ps & 100ps \\
 \item 单挑指令的执行时间相比于单周期不减少, 有时反而会增加(如上述流水线中单条指令的执行时间为\verb|1000ps|)
 \end{itemize}
 \subsection{冒险}
-所有指令都能够以流水方式执行是理想情况, 实际上无法达到, 因为下一条指令可能需要依赖上一条指令执行完毕之后才能执行(类似于操作系统同步互斥问题), 这里就涉及冒险:
+流水线线还有这样一种情况, 在下一个时钟周期中下一条指令不能执行. 这种情况称为冒险. 下面介绍三种冒险:
 \begin{itemize}
 \item 结构冒险 \par 由于硬件结构导致的冒险, 两条指令没法同时使用一块硬件 \par (如两条指令在不同的阶段需要同时访问相同的寄存器)
 \item 数据冒险 \par 下一条指令需要数据, 上一条指令还再计算中.
@@ -976,11 +976,37 @@ sub指令执行到ID的时候, add指令只执行到EX阶段, 需要等到add指
 \item 控制冒险(分支冒险) \par 下一条指令取决于上一条分支指令的结果.
 \end{itemize}\par
 \subsubsection{结构冒险}
+结构冒险是由于两条指令没法使用同一个硬件.
 \begin{figure}[H]
 \centering
-\includegraphics[scale=.5]{img/figure40.pdf}
+\includegraphics[scale=.4]{img/figure40.pdf}
 \end{figure}
-
+上图的方框含义:
+\begin{itemize}
+\item \verb|IF|: 表示取指阶段, 其外方框表示存储器, 右边的阴影表示读取存储器
+\item \verb|ID|: 表示指令的译码或者寄存器堆的读取阶段, 其外方框表示要读取的寄存器堆, 右边的阴影表示读取寄存器堆
+\item \verb|EX|: 表示指令的执行阶段, 其外边的图符表示\verb|ALU|, 阴影表示使用\verb|ALU|计算
+\item \verb|MEM|: 表示存储器访问阶段, 其外放框表示存储器, 右边的阴影表示读取存储器
+\item \verb|WB|: 表示写回阶段, 其外方框表示被写回的寄存器堆, 左边的阴影表示写入寄存器堆
+\end{itemize}\par
+由于使用了同一个存储器, 第\verb|1|条指令在访问存储器的时候, 第\verb|4|条指令无法取指令. 进而就产生了结构冒险. 由于\verb|MIPS|是为流水线而设计的, 所以在设计之初就想到了这种问题, 所以就采取了一系列应对措施, 如将存储器拆分为指令存储器和数据存储器.
+\subsubsection{数据冒险}
+数据冒险是由于一条指令必须等待另一条指令的完成. 比较理想的情况是: 第\verb|1|条指令的\verb|WB|步骤在时钟周期的前半部分已经完成写操作, 第\verb|4|条指令的\verb|Reg Read|步骤在时钟周期的后半部分紧接着完成读操作, 如下图
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.4]{img/figure41.pdf}
+\end{figure}
+然而, 事实上, 这种情况几率较小, 大多数的情况下会造成阻塞:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.4]{img/figure42.pdf}
+\end{figure}
+所以, 我们怎么解决这个问题呢?
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.4]{img/figure43.pdf}
+\end{figure}
+通过在数据通路中增加额外的硬件支持, 使前一条指令的\verb|ALU|一旦产生结果, 立即可以给后一条指令使用, 不必等到该数据存入指令中的目标寄存器. 上图中\verb|add|指令执行后的\verb|$s0|中的值作为\verb|sub|指令执行的输入的旁路连接.
 
 
 
