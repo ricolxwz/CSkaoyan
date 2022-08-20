@@ -835,7 +835,7 @@ L1:
 \includegraphics[scale=.3]{img/figure27.pdf}
 \end{figure}
 上图表示\verb|sw $t0, 32($s3)|指令执行的\textcolor{myred}{源数据流向}, \textcolor{mygreen}{结果流向}, \textcolor{myyellow}{\texttt{PC}改变}.
-\texttt{add}操作 \par
+\item \texttt{add}操作 \par
 我们以\verb|add $t0, $s1, $s2|为例, 首先, 将上述指令转化为十进制的样式:
 \begin{table}[H]
 \centering
@@ -851,7 +851,7 @@ L1:
 \includegraphics[scale=.3]{img/figure28.pdf}
 \end{figure}
 上图表示\verb|add $t0, $s1, $s2|指令执行的\textcolor{myred}{源数据流向}, \textcolor{mygreen}{结果流向}, \textcolor{myyellow}{\texttt{PC}改变}.
-\texttt{beq}操作 \par
+\item \texttt{beq}操作 \par
 我们以\verb|beq $s3, $t0, label|为例, 首先, 将上述指令转化为十进制的样式:
 \begin{table}[H]
 \centering
@@ -867,7 +867,7 @@ L1:
 \includegraphics[scale=.3]{img/figure29.pdf}
 \end{figure}
 上图表示\verb|beq $s3, $t0, label|指令执行的\textcolor{myred}{源数据流向}, \textcolor{myyellow}{\texttt{PC}改变}.
-\texttt{j}操作 \par
+\item \texttt{j}操作 \par
 我们以\verb|j Addr|为例, 在电路图中表示为:
 \begin{figure}[H]
 \centering
@@ -963,7 +963,23 @@ lw & 200ps & 100ps & 200ps & 200ps & 100ps \\
 \item \verb|加速比=单周期指令的执行时间/流水线指令的执行时间|$ \symtt{\approx} $\verb|流水线级数(理想情况)|
 \item 单挑指令的执行时间相比于单周期不减少, 有时反而会增加(如上述流水线中单条指令的执行时间为\verb|1000ps|)
 \end{itemize}
-
+\subsection{冒险}
+所有指令都能够以流水方式执行是理想情况, 实际上无法达到, 因为下一条指令可能需要依赖上一条指令执行完毕之后才能执行(类似于操作系统同步互斥问题), 这里就涉及冒险:
+\begin{itemize}
+\item 结构冒险 \par 由于硬件结构导致的冒险, 两条指令没法同时使用一块硬件 \par (如两条指令在不同的阶段需要同时访问相同的寄存器)
+\item 数据冒险 \par 下一条指令需要数据, 上一条指令还再计算中.
+\begin{lstlisting}
+add $s0, $t0, $t1
+sub $t2 $s0 $t3
+sub指令执行到ID的时候, add指令只执行到EX阶段, 需要等到add指令执行完WB才能把结果写回$s0中
+\end{lstlisting}
+\item 控制冒险(分支冒险) \par 下一条指令取决于上一条分支指令的结果.
+\end{itemize}\par
+\subsubsection{结构冒险}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.5]{img/figure40.pdf}
+\end{figure}
 
 
 
