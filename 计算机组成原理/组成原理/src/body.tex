@@ -910,7 +910,12 @@ L1:
 \end{itemize}
 \section{流水线}
 流水线是一种实现多条指令重叠执行的计数, 它改善的是系统的吞吐率, 每一个任务本身的执行时间不变. \par
-执行一条\verb|MIPS|指令包含\verb|5|个步骤(机器周期内包含\verb|5|个时钟周期):
+\subsection{处理步骤}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.5]{img/figure37.pdf}
+\end{figure}
+执行一条\verb|MIPS|指令包含\verb|5|个步骤:
 \begin{enumerate}
 \item \verb|Instructioin Fetch|: 从指令存储器中读出指令
 \item \verb|Instruction Decode|: 指令译码, 并且同时读出寄存器的内容
@@ -923,6 +928,41 @@ L1:
 \centering
 \includegraphics[scale=.2]{img/figure36.pdf}
 \end{figure}
+\subsection{单周期和流水线}
+单周期指的是指令以串行的方式执行, 而流水线就是指令以并行的方式执行. \par
+单周期每一个指令的时间相同, 而流水线每一个步骤的时间相同. 这是什么意思呢? 假设我们现在要执行\verb|3|次\verb|lw|指令, 先看\verb|lw|指令内部每一个步骤花的时间:
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|Z|Z|Z|Z|Z|Z|}
+\hline
+\textbf{Instr} & \textbf{IF} & \textbf{Reg Read} & \textbf{ALU} & \textbf{MEM} & \textbf{Reg Write} \\ \hline
+lw & 200ps & 100ps & 200ps & 200ps & 100ps \\
+\hline
+\end{tabularx}
+\end{table}
+根据单周期和流水线的不同, 我们画出以下的以时间为轴的过程图:
+\begin{figure}[H]
+\centering
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[scale=.4]{img/figure38.pdf}
+\caption{单周期}
+\end{subfigure}\vspace{2em}
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[scale=.4]{img/figure39.pdf}
+\caption{流水线}
+\end{subfigure}
+\end{figure}
+假设对寄存器的读操作发生在时钟周期的后半部分, 写操作发生在前半部分. 可以看到, 流水线的时钟周期受限于最慢的处理步骤, 时间为\verb|200ps|, 所以所有的流水级(\verb|Stage|)都是\verb|200ps|. 而单周期的每一个指令都是\verb|800ps|.\par 
+加速比\verb|=3*800/(800+3*200)|$ \symtt{\approx} $\verb|1.7|, 如果指令数量足够多的化, 如再增加\verb|1000000|条, 则加速比\verb|=1000000*|\\\verb|800/(800+1000000*200)|$ \symtt{\approx} $\verb|4|. 没有达到\verb|5|, 理想情况下可以达到.\par 
+\paragraph{总结}~{} 
+\begin{itemize}
+\item 流水线可以改善吞吐率
+\item 有些指令的有些时钟周期是浪费的
+\item \verb|加速比=单周期指令的执行时间/流水线指令的执行时间|$ \symtt{\approx} $\verb|流水线级数(理想情况)|
+\item 单挑指令的执行时间相比于单周期不减少, 有时反而会增加(如上述流水线中单条指令的执行时间为\verb|1000ps|)
+\end{itemize}
 
 
 
