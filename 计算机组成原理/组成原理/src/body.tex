@@ -796,12 +796,12 @@ L1:
 \item 中断周期: 保存程序断点
 \end{itemize}
 \section{\texttt{MIPS}指令体系}
-\subsection{组合逻辑\texttt{CPU}基本构成}
+\subsection{一个基本的\texttt{MIPS}实现}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.3]{img/figure24.pdf}
 \end{figure}
-\subsubsection{\texttt{MIPS}指令的简单实现}
+\subsubsection{\texttt{MIPS}子集基本实现(不包含选择器和控制器)}
 \begin{enumerate}
 \item \texttt{lw}操作 \par
 我们以\verb|lw $t0, 32($s3)|为例, 首先, 将上述指令转化为十进制的样式:
@@ -908,8 +908,21 @@ L1:
 \end{figure}
 用于控制寄存器, 存储器的读写, \verb|ALU|进行何种运算.
 \end{itemize}
-
-
+\section{流水线}
+流水线是一种实现多条指令重叠执行的计数, 它改善的是系统的吞吐率, 每一个任务本身的执行时间不变. \par
+执行一条\verb|MIPS|指令包含\verb|5|个步骤(机器周期内包含\verb|5|个时钟周期):
+\begin{enumerate}
+\item \verb|Instructioin Fetch|: 从指令存储器中读出指令
+\item \verb|Instruction Decode|: 指令译码, 并且同时读出寄存器的内容
+\item \verb|Execute|: 执行操作或者计算地址
+\item \verb|Memory Access|: 从数据存储器中读取操作数
+\item \verb|Write Back|: 将结果写回寄存器
+\end{enumerate}
+从电路图上看:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.2]{img/figure36.pdf}
+\end{figure}
 
 
 
