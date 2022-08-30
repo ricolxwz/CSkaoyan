@@ -1074,14 +1074,59 @@ sw $t5, 16($t0)
 \item 写回阶段: 把结果写回寄存器堆
 \item 选择\verb|PC|的下一个值: 需要在自增的\verb|PC|和\verb|MEM|级的分支地址之间进行选择
 \end{itemize}\par
-前者将会导致数据冒险, 后者将会导致控制冒险.\par 为了实现流水线, 以\verb|IF|为例, \verb|Instruction 1|在执行完\verb|IF|后准备执行\verb|ID|时, \verb|Instruction 2|开始执行\verb|IF|, 从而覆盖掉\verb|Instruction 1|在\verb|IF|阶段的值. 所以相比于单时钟周期的数据通路, 我们需要添加\textbf{流水线寄存器}来保存\verb|Instruction 1|在\verb|IF|阶段的结果. 另外\verb|4|个步骤也是如此. 由此, 我们得到\textbf{数据通路的流水线版本}:
+前者将会导致数据冒险, 后者将会导致控制冒险.\par \vspace{1em} 为了实现流水线, 以\verb|IF|为例, \verb|Instruction 1|在执行完\verb|IF|后准备执行\verb|ID|时, \verb|Instruction 2|开始执行\verb|IF|, 从而覆盖掉\verb|Instruction 1|在\verb|IF|阶段的值. 所以相比于单时钟周期的数据通路, 我们需要添加\textbf{流水线寄存器}来保存\verb|Instruction 1|在\verb|IF|阶段的结果. 另外\verb|4|个步骤也是如此. 由此, 我们得到\textbf{数据通路的流水线版本}:
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.2]{img/figure50.pdf}
 \end{figure}
-
-
-
+\subsection{简单指令的流水线}
+\subsubsection{\texttt{lw}指令流水线}
+以\verb|lw|指令为例, 分析在流水线中的数据通路:
+\begin{enumerate}
+\item {\kaishu 取指令} \par 根据\verb|PC|的值, 从指令寄存器中获取到这条指令, 存到\verb|IF/ID|寄存器中. \verb|PC|自增\verb|4|并写回, 等待下一个时钟周期来读取下一条指令, 同时\verb|PC+4|也被存储到\verb|IF/ID|寄存器中, 以备以后使用.
+\item {\kaishu 指令译码和寄存器堆的读取} \par 分析指令的各个部分, 读寄存器, 把读到的寄存器值以及扩展后的\verb|32|位偏移值存入\verb|ID/EX|寄存器, 自增后的\verb|PC|也存入\verb|ID/EX|寄存器.
+\item {\kaishu 地址计算} \par 把\verb|32|位扩展值以及读寄存器的值用\verb|ALU|相加, 得到目标地址, 将其存入\verb|EX/MEM|寄存器.
+\item {\kaishu 存储器访问} \par 用目标地址访问存储器, 把读到的数据存入\verb|MEM/WB|寄存器
+\item {\kaishu 写回} \par 把读到的数据写回到寄存器中.
+\end{enumerate}\par
+分析完\verb|lw|和\verb|sw|中数据流动的特点之后会发现, 这里存在一个\verb|bug|: 写寄存器的这一步发生在整个数据流的最后一步, 要写入寄存器的内容和要写的寄存器号是在最后一步\verb|WB|中给出的. 而上图中, 要写的寄存器号没有随着数据流向后传递, 直到\verb|WB|, 再传回来, 所以我们对电路进行了修正:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.2]{img/figure51.pdf}
+\end{figure}
+\subsubsection{\texttt{sw}指令流水线}
+\verb|sw|指令在流水线中的数据通路在\verb|IF|, \verb|ID|步骤与\verb|lw|指令相同. 这里只描述与\verb|lw|指令的不同之处:
+\begin{enumerate}
+\item {\kaishu 地址计算} \par 它会在\verb|EX/MEM|寄存器中装入要写的数据
+\item {\kaishu 存储器访问} \par 数据寄存器是写而不是读
+\item {\kaishu 写回} \par 什么也不做
+\end{enumerate}
+\subsection{流水线控制}
+所有的信号均在译码阶段产生并存储在流水线寄存器中. 在设计流水线控制单元的过程中, 研究人员采用了先设计\verb|ALU Control|, 再设计其他控制信号的方式:
+\subsubsection{\texttt{ALU Control}设计}
+\verb|ALUOp|取决于指令的\verb|opcode|和某些\verb|funct|.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.5]{img/figure52.pdf}
+\end{figure}
+上图采用的是多级译码的方式, 降低了主控单元复杂度.
+\subsubsection{其他控制信号单元设计}
+其他控制信号包括\textcolor{myred}{多选器控制信号}, \textcolor{myblue}{存储器读写控制信号}, \textcolor{mygreen}{间接信号}(如\verb|Branch|信号要和\verb|ALU|结果比较).
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|X|X|X|}
+\hline
+\makecell*[c]{\textbf{控制信号名称}} & \makecell*[c]{\textbf{无效含义}} & \makecell*[c]{\textbf{有效含义}} \\ \hline
+\makecell*[c]{\textcolor{myred}{\texttt{RegDst}}} & \makecell*[l]{写寄存器的目标寄存器号来自\\\texttt{rt}字段(\texttt{Ins[20-16]})} & \makecell*[l]{写寄存器的目标存储器号来自\\\texttt{rd}字段(\texttt{Ins[15-11]})} \\ \hline
+\makecell*[c]{\textcolor{myred}{\texttt{ALUSrc}}} & \makecell*[l]{第二个\texttt{ALU}操作数来自\\寄存器堆的第二个输出} & \makecell*[l]{第二个\texttt{ALU}操作数来自指令\\低\texttt{16}位的符号位扩展后的\\\texttt{32}位数} \\ \hline
+\makecell*[c]{\textcolor{myred}{\texttt{MemtoReg}}} & \makecell*[l]{写入寄存器的数来自\texttt{ALU}} & \makecell*[l]{写入寄存器的数来自数据\\寄存器} \\ \hline
+\makecell*[c]{\textcolor{myblue}{RegWrite}} & \makecell*[l]{无} & \makecell*[l]{寄存器堆写有效} \\ \hline
+\makecell*[c]{\textcolor{myblue}{MemRead}} & \makecell*[l]{无} & \makecell*[l]{数据存储器读有效} \\ \hline
+\makecell*[c]{\textcolor{myblue}{MemWrite}} & \makecell*[l]{无} & \makecell*[l]{数据存储器写有效} \\ \hline
+\makecell*[c]{\textcolor{mygreen}{\texttt{PCSrc}}} & \makecell*[l]{\texttt{PC}由\texttt{PC+4}取代} & \makecell*[l]{\texttt{PC}由分支目标取代} \\
+\hline
+\end{tabularx}
+\end{table}
 
 
 
