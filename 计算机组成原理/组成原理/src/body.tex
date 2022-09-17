@@ -1,5 +1,5 @@
 \chapter{概要}
-\section{程序}
+\section{层次}
 \begin{figure}[H]
 \centering
 \begin{subfigure}{.48\textwidth}
@@ -109,7 +109,7 @@
 \end{center}\par
 当然, 这个公式还有其他改进:\vspace{1em}
 \begin{equation*}
-\symtt{\frac{1}{\sum_{i=1}^{m}\frac{Fe_{i}}{Se_{i}}+(1-\sum_{i=1}^{m}Fe_{i})}}, \text{\texttt{其中i表示改进的部件的数量}}
+\symtt{S_{n}=\frac{1}{\sum_{i=1}^{m}\frac{Fe_{i}}{Se_{i}}+(1-\sum_{i=1}^{m}Fe_{i})}}, \text{\texttt{其中m表示改进的部件的数量, i表示改进的部件的编号}}
 \end{equation*}
 \chapter{指令}
 \section{引言}
@@ -150,7 +150,7 @@
 复杂的数据结构(数组等)存储于存储器中, 需要用数据传输指令交换数据:
 \begin{itemize}
 \item \verb|lw rt, shamt(rs)|: 取数
-\item \verb|sw rs, shamt(rt)|: 存数
+\item \verb|sw rt, shamt(rs)|: 存数
 \end{itemize}\par
 数据被存储到寄存器后, 可以进行相加减:
 \begin{itemize}
