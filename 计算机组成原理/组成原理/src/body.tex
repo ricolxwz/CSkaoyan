@@ -149,8 +149,8 @@
 \subsection{常见指令}
 复杂的数据结构(数组等)存储于存储器中, 需要用数据传输指令交换数据:
 \begin{itemize}
-\item \verb|lw rt, shamt(rs)|: 取数
-\item \verb|sw rt, shamt(rs)|: 存数
+\item \verb|lw rt, offset(rs)|: 取数
+\item \verb|sw rt, offset(rs)|: 存数
 \end{itemize}\par
 数据被存储到寄存器后, 可以进行相加减:
 \begin{itemize}
@@ -200,7 +200,7 @@ op & rs & rt & rd & shamt & funct  \\
 \centering
 \begin{tabularx}{\textwidth}{|Z|Z|Z|p{15em}<{\centering}|}
 \hline
-op & rs & rt & constant or address \\
+op & rs & rt & constant or offset or address \\
 \hline
 \end{tabularx}
 \end{table}\par
@@ -209,13 +209,13 @@ op & rs & rt & constant or address \\
 \item \verb|op|: 操作码
 \item \verb|rs|: 源寄存器号
 \item \verb|rt|: 目标寄存器号
-\item \verb|constant or address|: 偏移量
+\item \verb|constant or offset or address|: 偏移量
 \end{itemize}\par
 他们的位数:
 \begin{itemize}
 \item \verb|op|: \verb|6|位, 因为有\verb|64|种指令
 \item \verb|rs,rt|: \verb|5|位, 因为有\verb|32|个寄存器
-\item \verb|constant or address|: \verb|16|位, 因为\verb|32-6-5-5=16|
+\item \verb|constant or offset or address|: \verb|16|位, 因为\verb|32-6-5-5=16|
 \end{itemize}
 \subsection{\texttt{J}型指令}
 \begin{table}[H]
@@ -238,32 +238,32 @@ op & address \\
 \end{itemize}
 \section{\texttt{MIPS}逻辑操作}
 \subsection{指令}
-逻辑移动指令:
+\noindent {\kaishu 逻辑移动指令:}
 \begin{itemize}
 \item \verb|sll rd, rt, shamt|: 逻辑左移指令, \verb|rt|中的数左移\verb|shamt|位, 空出的位补\verb|0|, 结果存\verb|rd|
 \item \verb|srl rd, rt, shamt|: 逻辑右移指令, \verb|rt|中的数右移\verb|shamt|位, 空出的位补\verb|0|, 结果存\verb|rd|
 \end{itemize}\par
-上述指令为\verb|R|型指令, 其中\verb|op|都为\verb|0|, \verb|func|分别为\verb|0|和\verb|6|, \verb|shamt|为位移量, \verb|rs|不使用为0. \par
-逻辑运算指令:
+上述指令为\verb|R|型指令, 其中\verb|op|都为\verb|0|, \verb|func|分别为\verb|0|和\verb|6|, \verb|shamt|为位移量, \verb|rs|不使用为0. 第一个字母\verb|s|的意思是\verb|shift|, 最后一个字母\verb|l|的意思是\verb|logical|. \par \vspace{.5em}
+\noindent {\kaishu 逻辑运算指令:}
 \begin{itemize}
 \item \verb|add rd, rs, rt|: 逻辑与指令, \verb|rs|和\verb|rt|按位与, 结果存\verb|rd|
 \item \verb|or rd, rs, rt|: 逻辑或指令, \verb|rs|和\verb|rt|按位或, 结果存\verb|rd|
 \item \verb|nor rd, rs, rt|: 逻辑或非指令, \verb|rs|和\verb|rt|按位或非, 结果存\verb|rd|
 \end{itemize}\par
-上述指令为\verb|R|型指令, \verb|op|都为\verb|0|, \verb|func|分别为\verb|20|,\verb|25|,\verb|27|, \verb|shamt|全为\verb|0|.
+上述指令为\verb|R|型指令, \verb|op|都为\verb|0|, \verb|func|分别为\verb|20|,\verb|25|,\verb|27|, \verb|shamt|全为\verb|0|. 注意这里的\verb|add|指令的\verb|funct|和加法的\verb|funct|不同.
 \section{\texttt{MIPS}决策指令}
 \subsection{指令}
-\verb|bne|和\verb|beq|指令:
+\noindent {\kaishu \verb|bne|和\verb|beq|指令:}
 \begin{itemize}
-\item \verb|beq rs, rt, L1|: 如果\verb|rs=rt|跳转到标签为\verb|L1|的指令
-\item \verb|bne rs, rt, L1|: 如果\verb|rs!=rt|跳转到标签为\verb|L1|的指令
+\item \verb|beq rt, rs, L1|: 如果\verb|rs=rt|跳转到标签为\verb|L1|的指令
+\item \verb|bne rt, rs, L1|: 如果\verb|rs!=rt|跳转到标签为\verb|L1|的指令
 \item \verb|j L1|: 无条件转移到标签为\verb|L1|的指令
 \end{itemize}\par
-前两条为\verb|I|型指令, \verb|op|分别为\verb|4|,\verb|5|,\verb|2|. 最后一条指令为\verb|J|型指令.\par
-\verb|slt|和\verb|slti|指令:
+前两条为\verb|I|型指令, \verb|op|分别为\verb|4|,\verb|5|,\verb|2|. 最后一条指令为\verb|J|型指令.\par \vspace{.5em}
+\noindent {\kaishu \verb|slt|和\verb|slti|指令:}
 \begin{itemize}
 \item \verb|slt $rd, $rs, $rt|: 若\verb|rs<rt|, 则\verb|rd=1|, 否则\verb|rd=0|
-\item \verb|slti $rt, $rs, constant|: 若\verb|rs<constant|, 则\verb|rd=1|, 否则\verb|rd=0|
+\item \verb|slti $rt, $rs, constant|: 若\verb|rs<constant|, 则\verb|rt=1|, 否则\verb|rt=0|
 \end{itemize}
 \subsection{条件分支代码转\texttt{MIPS}}
 将以下代码:
