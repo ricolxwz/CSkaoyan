@@ -277,7 +277,7 @@ else f = g - h;
        bne $s3, $s4 ELSE
        add $s0, $s1, $s2
        j EXIT
-ELSE: $s0, $s1, $s2
+ELSE: sub $s0, $s1, $s2
 EXIT: ...
 \end{lstlisting}
 \subsection{循环代码转\texttt{MIPS}}
@@ -320,7 +320,8 @@ int leaf_example (int g, h, i, j)
     return f;
 }
 \end{lstlisting}\par
-转换为\texttt{MIPS}:
+转换为\texttt{MIPS}:\par
+参数变量\verb|g, h, i, j|分别对应寄存器\verb|$a0, $a1, $a2|和\verb|$a3|, \verb|f|对应\verb|$s0|.\par  分析上面的代码, 我们需要两个临时寄存器\verb|$t0|和\verb|$t1|用来保存中间变量, 所以我们得出, 上面的寄存器中会被覆写的有\verb|$t0, $t1, $s0|, 故我们需要通过把这三个寄存器原来的值压栈.
 \begin{lstlisting}
 # 入栈
 addi $sp, $sp, -12
@@ -330,8 +331,8 @@ sw $s0, 0($sp)
 # 运算
 add $t0, $a0, $a1
 add $t1, $a2, $a3
-add $s0, $t0, $t1
-addi $v0, $s0, $ZERO # 将结果$s0放到函数返回值寄存器$v0
+sub $s0, $t0, $t1
+addi $v0, $s0, 0 # 将结果$s0放到函数返回值寄存器$v0
 # 出栈
 lw $s0, 0($sp)
 lw $t0, 4($sp)
@@ -340,6 +341,7 @@ addi $sp, $sp, 12
 # 返回
 jr $ra
 \end{lstlisting}
+在这个例子中, 我们保存了\verb|$t0|和\verb|$t1|, 这样做是不必要的, 因为调用者不希望在过程调用时压栈\verb|$t0|和\verb|$t1|的值. 故\verb|MIPS|约定, 临时寄存器是不用压栈的.
 \section{\texttt{MIPS}嵌套}
 不调用其他过程的过程称为\textbf{叶过程}, 嵌套调用就是过程体中调用其他的过程(甚至包括自己) \par
 首先要知道, 递归分为两个阶段: 递归阶段和返回阶段. \par
@@ -486,7 +488,7 @@ L1:
 \verb|0|的表示方法唯一, (\verb|[0]=0,0000000, 1,0000000用于表示-128|), 范围为\verb|-2^n~2^n-1|, \verb|n|为尾数长度
 \item 示例 \par
 机器字长为\verb|8|位, 将真值\verb|x=-14|转换为补码: 原码为\verb|[x]原=1,0001110|, 从右往左第一个\verb|1|不变, 左边取反, 得到补码\verb|[x]补=1,1110010|
-\end{enumerate} \par 比较这两个数字的大小: \verb|1,1111111|和\verb|1,0000000|, 前者大, 因为前者转换为真值是\verb|1|, 而后者转化为真值为\verb|-128|
+\end{enumerate} \par 比较这两个数字的大小: \verb|1,1111111|和\verb|1,0000000|, 前者大, 因为前者转换为真值是\verb|-1|, 而后者转化为真值为\verb|-128|
 \subsection{移码}\label{移码}
 移码与原码, 反码, 补码不同, 他是一种无符号数. \par 移码=真值+偏置值, 若机器字长为\verb|n+1|位, 则偏置值为\verb|+2^n|, 当偏置值为\verb|+128|的时候: 补码=补码的符号位取反. \par
 偏置值可以取其他值, 如在\hyperref[IEEE 754]{\texttt{IEEE 754}}中, 单精度浮点数的偏移量为\verb|+127|, 即\verb|+01111111|.
