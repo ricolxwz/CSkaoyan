@@ -483,7 +483,10 @@ L1:
 \subsection{补码}
 \begin{enumerate}
 \item 含义 \par
-先将原码转化为反码, 再将数值位\verb|+1|. \par 或者, 将原码直接转为补码: 从后往前, 遇到的第一个\verb|1|之前不变, 后面取反(符号位不变), 反过来补码转原码也是如此.
+\begin{itemize}
+\item 正数: 与原码相同
+\item 负数: 先将原码转化为反码, 再将数值位\verb|+1|. \par 或者, 将原码直接转为补码: 从后往前, 遇到的第一个\verb|1|之前不变, 后面取反(符号位不变), 反过来补码转原码也是如此.
+\end{itemize}
 \item 范围 \par
 \verb|0|的表示方法唯一, (\verb|[0]=0,0000000, 1,0000000用于表示-128|), 范围为\verb|-2^n~2^n-1|, \verb|n|为尾数长度
 \item 示例 \par
@@ -491,7 +494,8 @@ L1:
 \end{enumerate} \par 比较这两个数字的大小: \verb|1,1111111|和\verb|1,0000000|, 前者大, 因为前者转换为真值是\verb|-1|, 而后者转化为真值为\verb|-128|
 \subsection{移码}\label{移码}
 移码与原码, 反码, 补码不同, 他是一种无符号数. \par 移码=真值+偏置值, 若机器字长为\verb|n+1|位, 则偏置值为\verb|+2^n|, 当偏置值为\verb|+128|的时候: 补码=补码的符号位取反. \par
-偏置值可以取其他值, 如在\hyperref[IEEE 754]{\texttt{IEEE 754}}中, 单精度浮点数的偏移量为\verb|+127|, 即\verb|+01111111|.
+偏置值可以取其他值, 如在\hyperref[IEEE 754]{\texttt{IEEE 754}}中, 单精度浮点数的偏移量为\verb|+127|, 即\verb|+01111111|. 此时, 真值为\verb|-128|, 则移码为\verb|1111 1111|(比较特殊).
+\textbf{在}\hyperref[IEEE 754]{\texttt{IEEE 754}}\textbf{中使用移码的目的: 省略阶符}\par
 \section{定点数的运算}
 \subsection{移位运算} % TODO 移位运算的溢出问题
 左移相当于\verb|*2|, 右移相当于\verb|/2|
@@ -534,22 +538,23 @@ L1:
 规格化浮点数: 规定原码尾数的最高位一定要是个1$ \Leftrightarrow $ \texttt{|M|}属于\verb|[0.5,1]|, 所以衍生出以下两种规范化的方法:
 \begin{itemize}
 \item 左规: 说明\texttt{M<1/2}, 太小, 需要扩大, 左移\verb|1|位将尾数的数值位扩大到原来的\verb|2|倍, 同时阶码减\verb|1|
-\item 右规: 说明\texttt{M>1}, 太大, 需要缩小, 右移\verb|1|位将尾数的数值位缩小到原来的\verb|1/2|倍, 同时阶码加\verb|1|
+\item 右规: 说明\texttt{M>1}, 太大, 需要缩小, 右移\verb|1|位将尾数的数值位缩小到原来的\verb|1/2|倍, 同时阶码加\verb|1|\par 当双符号位为\verb|01|或者\verb|10|时, 需要右归
 \end{itemize}\par
 尾数可以用原码或者是补码表示, 所以上述左规和右规可以分别用于原码或者补码的规格化:
 \begin{itemize}
 \item 原码: 尾数最高位为\verb|1|
 \begin{itemize}
-\item 尾数为正数: 通过左规和右规得到的标准形式应该是\verb|0.1XXXXXXXX|
-\item 尾数为负数: 通过左规和右规得到的标准形式应该是\verb|1.1XXXXXXXX|
+\item 尾数为正数: 通过左规和右规得到的标准形式应该是\verb|0,1XXXXXXXX|
+\item 尾数为负数: 通过左规和右规得到的标准形式应该是\verb|1,1XXXXXXXX|
 \end{itemize}\par
-注意, 上面尾数可以等于\verb|0.5|或者是\verb|-0.5|, 只要是\verb|0.1000000...|和\verb|1.1000000...|即可. 但是做不到等于\verb|1|或者\verb|-1|. 此外, 他们的数值位第一位都是\verb|1|, 所以在\hyperref[IEEE 754]{\texttt{IEEE 754}}中, 数值位的第一位可以默认省略.
+注意, 上面尾数可以等于\verb|0.5|或者是\verb|-0.5|, 只要是\verb|0,1000000...|和\verb|1,1000000...|即可. 但是做不到等于\verb|1|或者\verb|-1|.
 \item 补码: 尾数最高位与符号位相反
 \begin{itemize}
-\item 尾数为正数: 通过左规和右规得到的标准形式应该是\verb|0.1XXXXXXXXX|
-\item 尾数为负数: 通过左规和右规得到的标准形式应该是\verb|1.0XXXXXXXXX|
+\item 尾数为正数: 通过左规和右规得到的标准形式应该是\verb|0,1XXXXXXXXX|
+\item 尾数为负数: 通过左规和右规得到的标准形式应该是\verb|1,0XXXXXXXXX|
 \end{itemize}
-\end{itemize}
+\end{itemize}\par
+例题: 若某浮点数的阶码/尾码用补码表示, 共\verb|4+8|位, 则\verb|0110101110100|如何规格化. 答案: \verb|0,011;1,0100000|
 \subsection{\texttt{IEEE 754}标准}\label{IEEE 754} % TODO 阶码中的0和1有特殊用途, 以及IEEE表示范围
 \begin{figure}[H]
 \centering
@@ -557,35 +562,56 @@ L1:
 \end{figure}
 \subsubsection{阶码}
 阶码用移码表示, 单精度浮点数下长度为\verb|8|位. \par
-\hyperref[移码]{移码}是一种无符号数, 由于移码=真值+偏置值, 加完之后大于等于\verb|0|, 所以阶码没有符号位. 偏置值和数的类型有关, 单精度浮点数的偏置值为\verb|+127|, 双精度浮点数的偏置值为\verb|+1023|.
+\hyperref[移码]{移码}是一种无符号数, 由于移码=真值+偏置值, 加完之后大于等于\verb|0|, 所以阶码没有符号位. 偏置值和数的类型有关, 单精度浮点数的偏置值为\verb|+127|, 双精度浮点数的偏置值为\verb|+1023|. 特殊的, 我们规定阶码\verb|0|和全\verb|1|做\hyperref[特殊用途]{特殊用途}. 故真值的正常范围是\verb|-126~127|.
 \subsubsection{尾数}
 尾数用原码表示, 单精度浮点数下长度为\verb|23|位. \par
-尾数是一种有符号数, 他的符号放在开头, 数值部分放在末尾. 通过规格化后, 数值部分默认隐藏首位\verb|1|, 所以单精度浮点数下实际能表示的数值位有\verb|24|位.
+尾数是一种有符号数, 他的符号放在开头, 数值部分放在末尾. 通过规格化后, 数值部分默认隐藏首位\verb|1|, 所以单精度浮点数下实际能表示的数值位有\verb|24|位. 与前面不同, 该标准中\textbf{尾数的最高位是一位整数}$ \Leftrightarrow $\texttt{|M|}属于\verb|[1,2]|.在此范围内不用规格化, 在此范围外要规格化. 此外, \textbf{这个最高位整数可以省略.}
 \subsubsection{举例}
-以\verb|-1.75*2^(-3)|为例: \par
-\begin{itemize}
-\item 数符: 由于是负数, 所以是\verb|1|. \par
-\item 尾数的数值部分: 十进制下是\verb|1.75>1|, 故需要右归, 尾数的数值部分右移\verb|1|位, 阶码需要加\verb|1|, 得到尾数的数值位为\verb|0.875|即\verb|1110000...(共24位)|, 阶码为\verb|-2|. 由于尾数的数值位的首位\verb|1|可以省略, 所以最终尾数的数值位为\verb|110000...(共23位)|. \par
-\item 阶码: 经过上述规格化后, 阶码为\verb|-2|, 加上偏置值\verb|+127|, 得到移码十进制下为\verb|+125|, 转换为二进制为\verb|01111101|. \par
-\end{itemize}
-综上所述, 我们得到的\verb|IEEE 754|下的表示为: \verb|1,01111101,110000...(共23位)|.
+将\verb|1 10000001 01000000000000000000000|转化为真值:\par 
+\begin{enumerate}
+\item 数符\verb|=1|, 是个负数
+\item 尾数部分\verb|.0100|(隐含最高位整数\verb|1|), 尾数真值为\verb|(1.01)2|
+\item 移码\verb|=10000001|, 若看作无符号数\verb|=129|
+\item 单精度浮点型偏移量\verb|=127|
+\item 移码真值\verb|=129-127=2=(00000010)2|
+\item 浮点数真值\verb|=-1.25*2^2=-5.0|
+\end{enumerate}
+\subsubsection{\texttt{IEEE 754}中浮点数的类型}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|Z|Z|Z|Z|Z|Z|}
+\hline
+\textbf{类型} & \textbf{数符} & \textbf{阶码} & \textbf{尾数数值} & \textbf{总位数} & \textbf{偏置值} \\ \hline
+短浮点数 & 1 & 8 & 23 & 32 & 127 \\ \hline
+长浮点数 & 1 & 11 & 52 & 64 & 1023 \\
+\hline
+\end{tabularx}
+\end{table} \par
+\subsubsection{特殊}
+\begin{enumerate}\label{特殊用途}
+\item 当阶码\verb|E|全为\verb|0|, 尾数\verb|M|不全为\verb|0|的时候, 隐含的最高位变为\verb|0|, 阶码真值固定视为\verb|-126|, 表示\textbf{非规格化}小数$ \symtt{\pm(0.xxx)_{2}\times 2^{-126}} $ \par
+\item 当阶码\verb|E|全为\verb|0|, 尾数\verb|M|全为\verb|0|的时候, 表示真值$ \symtt{\pm 0} $
+\item 当阶码\verb|E|全为\verb|1|, 尾数\verb|M|全为\verb|0|的时候, 表示无穷大$ \symtt{\pm \infty} $
+\item 当阶码\verb|E|全为\verb|1|, 尾数\verb|M|不全为\verb|0|的时候, 表示非数值\verb|NaN(Not a Number)|
+\end{enumerate}
 \subsection{浮点数的加减运算}
 我们通常在十进制下做浮点数的加减运算.
 \subsubsection{步骤}
 \begin{enumerate}
 \item 对阶: 保持阶数一致, 小阶数向大阶数对齐
 \item 尾数相加/减
-\item 规格化, 保证尾数\verb|M|属于\verb|[0.5,1]|
+\item 规格化, 保证尾数\verb|M|属于\verb|[1,2]|(\verb|IEEE 754|标准)
 \end{enumerate}
 \subsubsection{举例}
 实现\verb|0.75*2^4+1.5*2^3|:
 \begin{enumerate}
 \item 对阶: 小阶$ \rightarrow $大阶, \verb|1.5*2^3|$ \rightarrow $\verb|0.75*2^4|
 \item 加减: \verb|0.75*2^4+0.75*2^4=1.5*2^4|
-\item 规格化: \verb|1.5*2^4|$ \rightarrow $\verb|0.75*2^5|
+\item 规格化: 无需规格化(\verb|IEEE 754|标准)
 \end{enumerate}
 \chapter{存储器}
-\section{存储器的层次}
+\section{存储器基础}
+\subsection{存储器的层次}
 \begin{figure}[H]
 \centering
 \begin{subfigure}{.48\textwidth}
@@ -601,7 +627,7 @@ L1:
 \end{subfigure}
 \end{figure}
 这就是存储器的层次结构. 在\verb|pyramid|的越上层, 价格越高, 速度越快, 容量越小. 要注意的是, \verb|Cache|和主存之间的数据交换是由硬件完成的, 对所有程序员透明. 主存和辅存之间的数据交换是由硬件和操作系统共同完成的. 对应用程序员透明.
-\section{存储器的分类}
+\subsection{存储器的分类}
 \begin{itemize}
 \item 按层次分类
 \begin{itemize}
@@ -625,10 +651,61 @@ L1:
 \begin{itemize}
 \item 易失存储器: 断电后, 存储信息消失. 如: \verb|RAM|
 \item 非易失存储器: 断电后, 存储信息依然保持, 如: \verb|ROM|
-\item 破坏性读出: 某个存储单元被读出时, 原存储器信息被破坏
-\item 非破坏性读出: 某个存储单元被读出时, 原存储器信息不会被破坏
+\item 破坏性读出: 某个存储单元被读出时, 原存储器信息被破坏, 如\verb|DRAM|
+\item 非破坏性读出: 某个存储单元被读出时, 原存储器信息不会被破坏, 如\verb|SRAM|
 \end{itemize}
 \end{itemize}
+\subsection{存储器的性能指标}
+存储速度: 数据传输率(主存带宽) = 存储字长 / 存储周期, 一个存储周期内可以读或者写一个存储字. 存储周期可以细分为:
+\begin{itemize}
+\item 存取时间: 启动一次存储器到完成该操作所经历的时间
+\begin{itemize}
+\item 读出时间
+\item 写入时间
+\end{itemize}
+\item 恢复时间: 读写操作后, 恢复内部状态的时间
+\end{itemize}
+\subsection{\texttt{SRAM}和\texttt{DRAM}的区别}
+\begin{table}[H]
+\begin{tabularx}{\textwidth}{|Z|Z|Z|}
+\hline
+& \verb|SRAM| & \verb|DRAM| \\ \hline
+存储信息 & 双稳态触发器 & 栅级电容 \\ \hline
+破坏性读出 & 非 & 是 \\ \hline
+需要刷新 & 不要 & 需要 \\ \hline
+运动速度 & 快 & 慢 \\ \hline
+集成度 & 低 & 高 \\ \hline
+存储成本 & 高 & 低 \\ \hline
+主要用途 & 高速缓存(\verb|Cache|) & 主机内存 \\
+\hline
+\end{tabularx}
+\end{table}
+\subsection{只读存储器}
+只读存储器\verb|(ROM)|相比于\verb|RAM|的优势在于: 存储密度高且非易失. \vspace{.5em}\par
+根据制造工艺的不同, \verb|ROM|可以分为:
+\begin{itemize}
+\item 掩模式只读存储器\verb|MROM|: 由厂家一次写入信息, 写入后无法改变
+\item 一次可编程只读存储器\verb|PROM|: 允许用户一次写入信息, 写入后无法改变
+\item 可擦除可编程可读存储器\verb|EPROM|: 允许用户多次写入信息, 写入后可以改写
+\item \verb|Flash|存储器: 拥有\verb|EPROM|的全部优点, 可以在不加电下长期保存信息, 且可以快速擦写
+\item 固态硬盘\verb|SSD|: 大号的\verb|Flash|
+\end{itemize}
+\subsection{主存储器的基本构成}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.5]{img/figure54.pdf}
+\end{figure}\par
+指令执行的过程:
+\begin{enumerate}
+\item \verb|CPU|把被访问单元的地址送到\verb|MAR|中, 并通过地址线发到地址寄存器中, 再送到地址译码器解码
+\item \verb|CPU|把读写信号通过控制线送到主存的读写控制电路.
+\item 区分读写
+\begin{enumerate}
+\item 读操作: 主存读出选中单元的内容送到数据线, 然后再送到\verb|MDR|中
+\item 写操作: \verb|CPU|同时要将写的信息送到\verb|MDR|中, 经数据线将内容送到选中的单元
+\end{enumerate}
+\end{enumerate}\par
+数据线数和地址线数可以反映存储体容量的大小, 图中芯片的容量是\verb|=2^36*64|.
 \section{\texttt{Cache}}
 \verb|Cache|是由\verb|SRAM|构成的, 在\verb|CPU|中的一种存储器.
 \subsection{基本原理}
