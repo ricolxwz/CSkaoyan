@@ -705,7 +705,62 @@ L1:
 \item 写操作: \verb|CPU|同时要将写的信息送到\verb|MDR|中, 经数据线将内容送到选中的单元
 \end{enumerate}
 \end{enumerate}\par
-数据线数和地址线数可以反映存储体容量的大小, 图中芯片的容量是\verb|=2^36*64|.
+\textbf{数据总线}的位数和工作频率的乘积正比于数据传输率 \par
+\textbf{地址总线}的位数决定了可寻址的最大内存空间 \par
+\textbf{控制总线}指出总线周期的类型和本次读写完成的时刻 \par
+\section{外部存储器}
+\subsection{磁盘存储器}
+\subsubsection{基础}
+\begin{itemize}
+\item 磁盘存储器的组成
+\begin{itemize}
+\item 磁盘驱动器: 磁头\verb| + |盘片
+\item 磁盘控制器: 硬盘存储器和主机的接口(见操作系统第\verb|4|章设备控制器), 标准有\verb|IDE, SCSI, SATA|
+\end{itemize}
+\item 存储区域
+\begin{itemize}
+\item 磁头数: \verb|=| 盘片数(一个磁头对应一个盘片)
+\item 柱面数: \verb|=| 磁道数
+\item 扇区数
+\end{itemize}
+\end{itemize}
+\subsubsection{性能指标}
+\begin{itemize}
+\item 磁盘容量: 磁盘容量有非格式化和格式化之分, 格式化之后磁盘的容量会变小
+\item 记录密度
+\begin{itemize}
+\item 道密度: 沿磁盘半径方向单位长度上的磁道数
+\item 位密度: 磁道单位长度上能记录的位数, 越往内位密度越大(每条磁道的容量相等)
+\item 面密度: 位密度和道密度的乘积
+\end{itemize}
+\item 平均存取时间
+\begin{itemize}
+\item 寻道时间(寻找时间)
+\item 延迟时间
+\item 传输时间
+\end{itemize}
+\item 数据传输率: 单位时间内传输的字节数.\subitem  假设转速为\verb|r|, 每条磁道容量为\verb|N|个字节, 则数据传输率为$ \symtt{D_{r}=rN} $
+\end{itemize}
+\subsubsection{地址}
+\begin{table}[H]
+\begin{tabularx}{\textwidth}{|Z|Z|Z|Z|}
+\hline
+驱动器号 & 柱面(磁道)号 & 盘面号 & 扇区号 \\
+\hline
+\end{tabularx}
+\end{table}
+\subsubsection{工作过程}
+硬盘的主要操作是寻址, 读盘, 写盘, 它的读写操作是串行的.
+\subsection{\texttt{RAID}}
+\verb|RAID|(独立冗余磁盘阵列), 是将多个独立的物理盘组成一个逻辑盘, 具有更高的存储性能, 可靠性和安全性). 以下是\verb|RAID|方案:
+\begin{itemize}
+\item \verb|RAID0|: 无冗余无校验的磁盘阵列. 将多个数据块交替存放在不同物理磁盘中, 几个磁盘交叉并行读写, 扩大了容量, 又提高了磁盘数据存取速度, 但没有容错能力
+\item \verb|RAID1|: 镜像磁盘阵列. 两个硬盘同时进行读写, 互为备份. 又较好安全性. 容量减少一半
+\item \verb|RAID2|: 纠错的海明码磁盘阵列
+\item \verb|RAID3|: 位交叉奇偶校验的磁盘阵列
+\item \verb|RAID4|: 块交叉奇偶校验的磁盘阵列
+\item \verb|RAID5|: 无独立校验的奇偶校验磁盘阵列
+\end{itemize}
 \section{\texttt{Cache}}
 \verb|Cache|是由\verb|SRAM|构成的, 在\verb|CPU|中的一种存储器.
 \subsection{基本原理}
@@ -714,41 +769,54 @@ L1:
 \item 时间局部性: 现在访问的地址, 不久之后也很可能再次被访问
 \item 空间局部性: 现在访问的地址, 其附近的地址也很可能即将被访问
 \end{itemize}
+\subsection{性能指标}
+设$ \symtt{t_{c}} $为访问一次\verb|Cache|所需要的时间, $ \symtt{t_{m}} $为访问一次主存所需要的时间. 命中率为\verb|H|, 缺失率为\verb|M=1-H|. 则系统的\textbf{平均访问时间}:
+\begin{itemize}
+\item 同时访问\verb|Cache|和主存: $ \symtt{Ht_{c}+(1-H)(t_{c}+t_{m})} $
+\item 先访问\verb|Cache|, 若\verb|Cache|未命中时访问主存: $ \symtt{Ht_{c}+(1-H)t_{m}} $
+\end{itemize}
 \subsection{主存到\texttt{Cache}的映射}
-\verb|Cache|被分成与主存的页框大小一致的\verb|Cache|块(或称Cache行), 两者之间以块为单位进行数据交换. 下面解释了内存中的块应该放在\verb|Cache|中的哪个位置:
+\verb|Cache|被分成与主存的页框大小一致的\verb|Cache|块(或称\verb|Cache|行), 两者之间以块为单位进行数据交换. 下面解释了内存中的块应该放在\verb|Cache|中的哪个位置:
 \subsubsection{全相联映射}
 主存的块可以装入\verb|Cache|的任何块, 没有公式. 相应的地址结构为:
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.5]{img/figure13.pdf}
-\end{figure}
+\end{figure}\par
+这里的标记就是主存块号. 另外还有一位有效位, \verb|1|为有效, 如果有效位为\verb|1|, 且要访问的主存块号和标记匹配, 则命中.
 \subsubsection{直接映射}
 主存中的块必须放入下面公式的指定\verb|Cache|块:
 \begin{center}
 \verb|j = i mod 2^c, 其中j为Cache块号, i为主存块号, 2^c为Cache的总块数|
 \end{center} \par
-\par 从上面的映射关系可以看出, 主存块号的低\verb|c|位正是它要装入的\verb|Cache|行号. 若主存中用\verb|m|位表示块号, 则标记(有效位+内存地址高位)共\verb|m-c|位, \verb|Cache|块号共\verb|c|位, 相应的地址结构为:
+\par 从上面的映射关系可以看出, 主存块号的低\verb|c|位正是它要装入的\verb|Cache|行号. 若主存中用\verb|m|位表示块号, 则标记共\verb|m-c|位, \verb|Cache|块号共\verb|c|位, 相应的地址结构为:
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.5]{img/figure15.pdf}
 \end{figure}\par
+这里的标记\verb|+Cache|号就是主存块号. 同样的另外还有一位有效位.
 \subsubsection{组相联映射}
+\verb|n|路组相联映射: 将\verb|n|个\verb|Cache|行为一组.\par
 将\verb|Cache|分成大小相等的组, 主存的一个数据块可以装入一组内的任意位置, 即组间采取直接映射, 组内采取全相联映射, 内存块可以放在下面公式指定的\verb|Cache|\textbf{组}中:
 \begin{center}
 \verb|j = i mod Q, 其中j为Cache块号, i为主存块号, Q为组数|
 \end{center}\par 
-与直接映射相似, 主存块号的低位用来表示组号, 内存块号的高位和有效位用来表示标记, 相应的地址结构为:
+与直接映射相似, 主存块号的低位用来表示组号,如: 分为\verb|4|组, 那么低\verb|2|位可以表示组号, 内存块号的高位和有效位用来表示标记, 相应的地址结构为:
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.5]{img/figure14.pdf}
-\end{figure}
+\end{figure}\par
+这里的标记\verb|+|组号就是主存块号. 同样的另外还有一位有效位.\par
 根据上述的地址结构, 我们应该可以推断出\verb|CPU|的访存过程:
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.4]{img/figure16.pdf}
 \caption*{直接映射}
-\end{figure}\par
-上图为直接映射方式, 全相联映射中没有组,行号,内存地址高位低位的概念, 他的标记就是有效位+内存块号. 组相联映射是一种介于全相联映射和直接映射之间的一种映射.
+\end{figure}
+\subsubsection{比较}
+全相联映射空间利用充分, 命中率高. 但是查找标记的速度慢.\par
+直接映射查找标记的速度块. 但是空间利用不充分, 命中率低.\par
+组相联映射是两者的这种, 综合效果好.
 \subsection{替换算法}
 由于\verb|Cache|的空间通常很小, 所以用不到的\verb|Cache|块就要及时换出, 下面说明上述三种映射中替换算法要解决的问题:
 \begin{itemize}
