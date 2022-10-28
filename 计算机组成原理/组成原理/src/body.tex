@@ -1335,9 +1335,75 @@ sw $t5, 16($t0)
 \item 控制信号\verb|WB|
 \end{enumerate}
 \end{enumerate}
-
-
-
-
-
-
+\chapter{设备}
+\section{中断}
+\subsection{流程}
+\begin{enumerate}
+\item 中断请求: 中断源向\verb|CPU|发送中断请求信号
+\item 中断响应
+\begin{enumerate}
+\item 条件判断: 判断是否可以响应中断
+\item 中断判优: 判断优先响应哪个中断源
+\end{enumerate}
+\item 中断处理
+\begin{enumerate}
+\item 中断隐指令
+\item 中断服务程序
+\end{enumerate}
+\end{enumerate}
+\subsection{分类}
+见操作系统. 其中, 外中断分为{\heiti 可屏蔽中断}和{\heiti 不可屏蔽中断}. 前者关中断时也会被响应(如掉电), 后者关中断时不会被响应. 我们在设备这一章主要研究的是{\heiti 可屏蔽中断}. \verb|PSW|(程序状态字寄存器)中的\verb|IF|位为\verb|0|表示关中断.
+\subsection{中断请求}
+为了区分并记录不同的中断源, 设置一个{\heiti 中断请求标记触发器}\verb|INTR|, 当其状态为\verb|1|的时候, 表示中断源有请求. 这些触发器可以组成{\heiti 中断请求标记寄存器}, 该寄存器可以集中在\verb|CPU|中, 也可以分散在各个中断源中.\par
+\verb|CPU|会在每条指令结束之前向接口发出{\heiti 中断查询信号}. 以获取中断请求. 也就是说, \verb|CPU|响应中断是发生在每条指令执行阶段的结束时刻.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.4]{img/figure55}
+\end{figure}
+\subsection{中断响应}
+\subsubsection{条件判断}
+\verb|CPU|响应中断必须满足\verb|3|个条件:
+\begin{enumerate}
+\item 中断源有中断请求
+\item \verb|CPU|开中断
+\item 一条指令执行完毕, 没有更紧迫的任务
+\end{enumerate}
+\subsubsection{中断判优}
+可以用硬件实现, 也可以用软件实现. 过于复杂, 不再赘述.\par
+优先级如下:
+\begin{enumerate}
+\item 硬件故障中断属于最高级, 其次是软件中断
+\item 非屏蔽中断优于可屏蔽中断
+\item \verb|DMA|请求优于\verb|IO|设备传送的中断请求
+\item 高速设备低于低速设备
+\item 输入设备优于输出设备
+\item 实时设备优于普通设备
+\end{enumerate}
+\subsection{中断响应}
+\subsubsection{中断隐指令}
+中断隐指令不是一条指令, 而是一些列任务:
+\begin{enumerate}
+\item 关中断: 将\verb|PSW|中的\verb|IF|字段置为\verb|0|
+\item 保存\verb|PC|的值(保存断点): 将源程序\verb|PC|的值存到栈或其他存储单元
+\item 修改\verb|PC|的值: 将{\heiti 中断服务程序}的入口地址传给\verb|PC|
+\begin{enumerate}
+\item 软件查询法
+\item 硬件向量法: 由{\heiti 硬件}产生{\heiti 向量地址}, 再由{\heiti 向量地址}找到{\heiti 入口地址(中断向量)}
+\end{enumerate}
+\end{enumerate}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.4]{img/figure56}
+\end{figure}
+\subsubsection{中断服务程序}
+由中断隐指令, 我们已经得到了中断服务程序的入口地址(中断向量), 现在我们开始执行中断服务程序:
+\begin{enumerate}
+\item 保护现场: 保护通用寄存器和状态寄存器的内容, 使用栈或者其他存储单元
+\item 中断服务: 主体部分, 具体看中断源的请求是什么
+\item 恢复现场: 通过出栈指令或取数指令把信息恢复
+\item 中断返回: 通过中断返回指令返回到源程序断点处
+\end{enumerate}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.4]{img/figure57}
+\end{figure}
