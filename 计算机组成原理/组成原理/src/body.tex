@@ -1379,7 +1379,7 @@ sw $t5, 16($t0)
 \item 输入设备优于输出设备
 \item 实时设备优于普通设备
 \end{enumerate}
-\subsection{中断响应}
+\subsection{中断处理}
 \subsubsection{中断隐指令}
 中断隐指令不是一条指令, 而是一些列任务:
 \begin{enumerate}
@@ -1388,7 +1388,7 @@ sw $t5, 16($t0)
 \item 修改\verb|PC|的值: 将{\heiti 中断服务程序}的入口地址传给\verb|PC|
 \begin{enumerate}
 \item 软件查询法
-\item 硬件向量法: 由{\heiti 硬件}产生{\heiti 向量地址}, 再由{\heiti 向量地址}找到{\heiti 入口地址(中断向量)}
+\item 硬件向量法: 由{\heiti 硬件}产生{\heiti 向量地址}, 再由{\heiti 向量地址}找到{\heiti 入口地址(中断向量)}. \textbf{各中断向量统一存放在中断向量表中, 该表由操作系统初始化(易错点: 由操作系统实现)}
 \end{enumerate}
 \end{enumerate}
 \begin{figure}[H]
@@ -1396,12 +1396,12 @@ sw $t5, 16($t0)
 \includegraphics[scale=.4]{img/figure56}
 \end{figure}
 \subsubsection{中断服务程序}
-由中断隐指令, 我们已经得到了中断服务程序的入口地址(中断向量), 现在我们开始执行中断服务程序:
+由中断隐指令, 我们已经得到了中断服务程序的入口地址(中断向量), 现在我们开始执行中断服务程序\textbf{(中断服务程序属于操作系统内核, 运行在内核态)}:
 \begin{enumerate}
 \item 保护现场: 保护通用寄存器和状态寄存器的内容, 使用栈或者其他存储单元
 \item 中断服务: 主体部分, 具体看中断源的请求是什么
 \item 恢复现场: 通过出栈指令或取数指令把信息恢复
-\item 中断返回: 通过中断返回指令返回到源程序断点处
+\item 中断返回/开中断: 通过中断返回指令返回到源程序断点处, 并打开中断
 \end{enumerate}
 \begin{figure}[H]
 \centering
